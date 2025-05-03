@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PostUp - Homepage</title>
+    <style>
+        :root {
+            --bg-color: #ffffff;
+            --text-color: #000000;
+            --primary-color: #3B82F6; /* Blue for buttons */
+            --button-bg: #8B5CF6;
+            --button-hover-bg: #6D46C1;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            transition: background-color 0.3s ease, color 0.3s ease;
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        h1 {
+            margin-top: 50px;
+            font-size: 2.5em;
+        }
+
+        p {
+            font-size: 1.2em;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* Dark mode overrides */
+        .dark {
+            --bg-color: #1E1E1E;
+            --text-color: #ffffff;
+            --primary-color: #8B5CF6;
+            --button-bg: #6D46C1;
+            --button-hover-bg: #5A3D99;
+        }
+
+        /* Button styling */
+        button {
+            background-color: var(--primary-color);
+            color: #fff;
+            padding: 10px 20px;
+            border: none;
+            cursor: pointer;
+            border-radius: 8px;
+            font-size: 1em;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: var(--button-hover-bg);
+        }
+
+        /* Post feed styling */
+        .feed {
+            margin-top: 30px;
+        }
+
+        .post {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            margin: 10px 0;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: transform 0.2s ease;
+        }
+
+        .post:hover {
+            transform: scale(1.02);
+        }
+
+        .post-title {
+            font-size: 1.8em;
+            margin-bottom: 10px;
+        }
+
+        .post-content {
+            font-size: 1.1em;
+            margin-bottom: 10px;
+        }
+
+        .post-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .bottom-nav {
+            display: flex;
+            justify-content: space-around;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            background-color: var(--bg-color);
+            padding: 10px 0;
+            box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .bottom-nav button {
+            background-color: var(--primary-color);
+            padding: 10px;
+            flex: 1;
+            border: none;
+            color: white;
+            font-size: 1em;
+            cursor: pointer;
+        }
+
+      
+        .dark .bottom-nav button {
+            background-color: var(--button-bg);
+        }
+
+        .dark .bottom-nav button:hover {
+            background-color: var(--button-hover-bg);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Welcome to PostUp!</h1>
+        <p>Every programmer's home.</p>
+        <button id="themeToggle">Toggle Theme</button>
+
+       
+
+    <!-- Bottom Navigation Bar -->
+    <div class="bottom-nav">
+        <button>Home</button>
+        <button onclick="window.location.href='profile.html'">My Profile</button>
+        <button>My Feed</button>
+        <button>Create Post</button>
+    </div>
+
+    <!-- Link to compiled JavaScript file -->
+    <script src="toggleBtn.js" defer></script>
+   
+
+</body>
+</html>

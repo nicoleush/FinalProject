@@ -2,11 +2,87 @@
 <html>
 
 <head>
-  <title>Index Page</title>
+  <style>
+    body {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      background-color: rgb(230, 217, 201);
+    }
+
+    @keyframes slideIn {
+      from {
+        transform: translateY(-50px);
+        opacity: 0;
+      }
+      to {
+        transform: translateY(0);
+        opacity: 1;
+      }
+    }
+
+    h2 {
+      animation: slideIn 1s ease-out;
+    }
+
+    .avatar-container {
+      display: flex;
+      gap: 15px;
+      margin-top: 10px;
+    }
+
+    .avatar {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      cursor: pointer;
+      border: 3px solid transparent;
+      transition: 0.3s;
+    }
+
+    .avatar:hover {
+      border-color: black;
+    }
+
+    .selected {
+      border-color: red;
+    }
+
+  </style>
+  <title>Let's get started!</title>
 </head>
 
 <body>
-  <h1>The main page of the website</h1>
+    <h1>Let's get started!</h1>
+    <h2>Personalize your profile</h2>
+
+    <div class="avatar-container">
+      <img src="https://api.dicebear.com/7.x/bottts/svg?seed=1" class="avatar">
+      <img src="https://api.dicebear.com/7.x/bottts/svg?seed=2" class="avatar">
+      <img src="https://api.dicebear.com/7.x/bottts/svg?seed=3" class="avatar">
+      <img src="https://api.dicebear.com/7.x/bottts/svg?seed=4" class="avatar">
+      <img src="https://api.dicebear.com/7.x/bottts/svg?seed=5" class="avatar">
+      <img src="https://api.dicebear.com/7.x/bottts/svg?seed=6" class="avatar">
+    </div>
+
+    <div style="display: flex; flex-direction: column; align-items: center; gap: 10px; margin-top: 20px;">
+        <input type="text" placeholder="Username" required style="padding: 10px; width: 200px;" id="username">
+        <input type="email" placeholder="Email" required style="padding: 10px; width: 200px;" id="email">
+        <input type="password" placeholder="Password" required style="padding: 10px; width: 200px;" id="password">
+        <input type="hidden" id="selectedAvatar" name="avatar" id="avatar">
+        <button type="submit" style="background-color: black; color: white; padding: 10px 20px; border: none; cursor: pointer;" id="signUp">
+          Sign Up
+        </button>
+      </div>
+    <script src="signup.js" type="module"></script>
+    <input type="hidden" id="selectedAvatar" name="avatar">
+    <!-- signup.html -->
+<div id="message" style="color: red; margin-top: 10px;"></div>
+
+   
+    
+
+
 </body>
 
 </html>

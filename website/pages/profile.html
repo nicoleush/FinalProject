@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>User Profile</title>
+  <link id="theme-style" rel="stylesheet" href="styles/light-mode.css">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 20px;
+    }
+    .profile-container {
+      max-width: 500px;
+      margin: auto;
+    }
+    .profile-container img {
+      max-width: 200px;
+      border-radius: 10px;
+    }
+    .dark-mode {
+      background-color: #121212;
+      color: white;
+    }
+    .light-mode {
+      background-color: white;
+      color: black;
+    }
+  </style>
+</head>
+<body>
+  <div class="profile-container">
+    <h1>User Profile</h1>
+    <p>Username: <span id="username"></span></p>
+    <p>Bio: <span id="bio"></span></p>
+    <img id="avatar" src="../assets/imgs/default.jpg" alt="Avatar" />
+
+    <br><br>
+    <button onclick="toggleTheme()">Switch Theme</button>
+  </div>
+
+  <script>
+    function applyTheme() {
+      const theme = localStorage.getItem('theme') || 'light';
+      const themeStyle = document.getElementById('theme-style');
+      document.body.className = theme === 'dark' ? 'dark-mode' : 'light-mode';
+      themeStyle.href = theme === 'dark' ? 'styles/dark-mode.css' : 'styles/light-mode.css';
+    }
+
+    function toggleTheme() {
+      const currentTheme = localStorage.getItem('theme') || 'light';
+      const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+      localStorage.setItem('theme', newTheme);
+      applyTheme();
+    }
+
+    applyTheme();
+  </script>
+  <script src="profile.js"></script>
+
+</body>
+</html>
