@@ -1,36 +1,50 @@
+import { send } from "../utilities";
 
-const userId = localStorage.getItem("userId");
 
+
+function applyTheme(theme: string): void {
+  const themeStyle = document.getElementById('theme-style') as HTMLLinkElement | null;
+  if (themeStyle) {
+    document.body.className = theme === 'dark' ? 'dark-mode' : 'light-mode';
+    themeStyle.href = theme === 'dark' ? 'styles/dark-mode.css' : 'styles/light-mode.css';
+  }
+}
+
+function toggleTheme(): void {
+  const currentTheme = localStorage.getItem('theme') || 'light';
+  const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+  localStorage.setItem('theme', newTheme);
+  applyTheme(newTheme);
+}
+
+
+interface User {
+  username: string;
+  bio: string;
+  avatarUrl?: string;
+  theme?: string;
+}
+
+const userId: string | null = localStorage.getItem("userId");
 
 if (!userId) {
   window.location.href = "login.html";
 } else {
- 
-  fetch(`http://localhost:5000/profile?id=${userId}`)
+  let user = await send(`profile`, userId) as User;
 
-    .then(response => {
-      if (!response.ok) throw new Error("Server returned an error");
-      return response.json();
-    })
-    .then(user => {
-     
-      const usernameElem = document.getElementById("username");
-      const bioElem = document.getElementById("bio");
-      const avatarElem = document.getElementById("avatar") as HTMLImageElement;
+  // if (!user) throw new Error("Server returned an error");
 
-      if (usernameElem) usernameElem.textContent = user.username;
-      if (bioElem) bioElem.textContent = user.bio;
-      if (avatarElem) avatarElem.src = user.avatarUrl || "../assets/imgs/default.jpg";
+  const usernameElem = document.getElementById("username") as HTMLSpanElement;
+  const bioElem = document.getElementById("bio") as HTMLSpanElement;
+  const avatarElem = document.getElementById("avatar") as HTMLImageElement;
 
-   
-      if (user.theme === "dark") {
-        document.body.classList.add("dark-mode");
-      } else {
-        document.body.classList.remove("dark-mode");
-      }
-    })
-    .catch(error => {
-      console.error("Failed to load profile:", error);
-      document.body.innerHTML = "<p>Failed to load profile. Please try again later.</p>";
-    });
+  usernameElem.textContent = user.username;
+  bioElem.textContent = user.bio;
+  avatarElem.src = user.avatarUrl || "../assets/imgs/default.jpg";
+
+  const userTheme = user.theme || localStorage.getItem('theme') || 'light';
+  localStorage.setItem('theme', userTheme);
+  applyTheme(userTheme);
 }
+// Make sure this is at the bottom of profile.ts
+(window as any).toggleTheme = toggleTheme;

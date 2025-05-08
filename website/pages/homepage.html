@@ -8,7 +8,7 @@
         :root {
             --bg-color: #ffffff;
             --text-color: #000000;
-            --primary-color: #3B82F6; /* Blue for buttons */
+            --primary-color: #3B82F6;
             --button-bg: #8B5CF6;
             --button-hover-bg: #6D46C1;
         }
@@ -26,19 +26,20 @@
         h1 {
             margin-top: 50px;
             font-size: 2.5em;
+            text-align: center;
         }
 
         p {
             font-size: 1.2em;
+            text-align: center;
         }
 
         .container {
-            max-width: 1200px;
-            margin: 0 auto;
+            max-width: 800px;
+            margin: 20px auto;
             padding: 20px;
         }
 
-        /* Dark mode overrides */
         .dark {
             --bg-color: #1E1E1E;
             --text-color: #ffffff;
@@ -47,7 +48,6 @@
             --button-hover-bg: #5A3D99;
         }
 
-        /* Button styling */
         button {
             background-color: var(--primary-color);
             color: #fff;
@@ -61,41 +61,6 @@
 
         button:hover {
             background-color: var(--button-hover-bg);
-        }
-
-        /* Post feed styling */
-        .feed {
-            margin-top: 30px;
-        }
-
-        .post {
-            background-color: var(--bg-color);
-            color: var(--text-color);
-            margin: 10px 0;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            transition: transform 0.2s ease;
-        }
-
-        .post:hover {
-            transform: scale(1.02);
-        }
-
-        .post-title {
-            font-size: 1.8em;
-            margin-bottom: 10px;
-        }
-
-        .post-content {
-            font-size: 1.1em;
-            margin-bottom: 10px;
-        }
-
-        .post-footer {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
         }
 
         .bottom-nav {
@@ -119,13 +84,43 @@
             cursor: pointer;
         }
 
-      
         .dark .bottom-nav button {
             background-color: var(--button-bg);
         }
 
         .dark .bottom-nav button:hover {
             background-color: var(--button-hover-bg);
+        }
+
+        /* Hidden create post form */
+        #postForm {
+            display: none;
+            margin-top: 20px;
+        }
+
+        #postForm input, #postForm textarea {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+
+        #feed {
+            margin-top: 30px;
+        }
+
+        .post {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            margin: 10px 0;
+            padding: 15px;
+            border-radius: 10px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .post h3 {
+            margin-top: 0;
         }
     </style>
 </head>
@@ -135,19 +130,37 @@
         <p>Every programmer's home.</p>
         <button id="themeToggle">Toggle Theme</button>
 
-       
-
-    <!-- Bottom Navigation Bar -->
-    <div class="bottom-nav">
-        <button>Home</button>
-        <button onclick="window.location.href='profile.html'">My Profile</button>
-        <button>My Feed</button>
-        <button>Create Post</button>
+ 
+        <!-- Post Feed -->
+        <h2 style="margin-top: 40px;">Recent Posts</h2>
+        <div id="feed"></div>
     </div>
 
-    <!-- Link to compiled JavaScript file -->
-    <script src="toggleBtn.js" defer></script>
-   
+    <!-- Bottom Navigation -->
+    <div class="bottom-nav">
+        <button onclick="window.location.href='homepage.html'">Home</button>
+        <button onclick="window.location.href='profile.html'">My Profile</button>
+        <button id="createPostBtn" onclick="window.location.href='createPost.html'">Create Post</button>
 
+    </div>
+
+    <script>
+     
+    
+        // Theme toggle
+        const toggleBtn = document.getElementById("themeToggle");
+        const currentTheme = localStorage.getItem("theme");
+    
+        if (currentTheme === "dark") {
+            document.body.classList.add("dark");
+        }
+    
+        toggleBtn?.addEventListener("click", () => {
+            document.body.classList.toggle("dark");
+            const isDark = document.body.classList.contains("dark");
+            localStorage.setItem("theme", isDark ? "dark" : "light");
+        });
+    </script>
+    
 </body>
 </html>

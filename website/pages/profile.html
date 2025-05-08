@@ -4,7 +4,8 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>User Profile</title>
-  <link id="theme-style" rel="stylesheet" href="styles/light-mode.css">
+  <link id="theme-style" rel="stylesheet" href="../../styles/light-mode.css">
+
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -37,27 +38,17 @@
     <img id="avatar" src="../assets/imgs/default.jpg" alt="Avatar" />
 
     <br><br>
-    <button onclick="toggleTheme()">Switch Theme</button>
+    <button id="themeToggle">Switch Theme</button>
+
+    
+    
+
   </div>
 
-  <script>
-    function applyTheme() {
-      const theme = localStorage.getItem('theme') || 'light';
-      const themeStyle = document.getElementById('theme-style');
-      document.body.className = theme === 'dark' ? 'dark-mode' : 'light-mode';
-      themeStyle.href = theme === 'dark' ? 'styles/dark-mode.css' : 'styles/light-mode.css';
-    }
+  <script src="profile.js" type="module"></script>
+  <script src="toggleBtn.js" type="module"></script>
+  
 
-    function toggleTheme() {
-      const currentTheme = localStorage.getItem('theme') || 'light';
-      const newTheme = currentTheme === 'light' ? 'dark' : 'light';
-      localStorage.setItem('theme', newTheme);
-      applyTheme();
-    }
-
-    applyTheme();
-  </script>
-  <script src="profile.js"></script>
-
+  
 </body>
 </html>
