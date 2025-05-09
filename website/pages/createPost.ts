@@ -1,5 +1,7 @@
 import { send } from "../utilities";
 
+let submitButton = document.querySelector("#submitPost") as HTMLButtonElement;
+
 const userId: string | null = localStorage.getItem("userId");
 
 // Show post form when clicking Create Post button
@@ -11,7 +13,7 @@ document.getElementById("createPostBtn")?.addEventListener("click", () => {
 });
 
 // Submit a new post
-document.getElementById("submitPost")?.addEventListener("click", async () => {
+submitButton.onclick = async function() {
     const titleInput = document.getElementById("postTitle") as HTMLInputElement | null;
     const contentInput = document.getElementById("postContent") as HTMLInputElement | null;
 
@@ -23,23 +25,18 @@ document.getElementById("submitPost")?.addEventListener("click", async () => {
         return;
     }
 
-    await fetch("/createPost", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify([userId, title, content])
-    });
+    await send("createPost", [userId, title, content]);
 
     if (titleInput) titleInput.value = "";
     if (contentInput) contentInput.value = "";
     const form = document.getElementById("postForm") as HTMLElement | null;
     if (form) form.style.display = "none";
     loadPosts();
-});
+};
 
 // Load posts to the feed
 async function loadPosts(): Promise<void> {
-    const res = await fetch("/getPosts");
-    const posts = await res.json();
+    const posts = await send("getPosts", {}); // Changed to use send with empty body
 
     const feed = document.getElementById("feed") as HTMLElement | null;
     if (feed) {
@@ -55,6 +52,7 @@ async function loadPosts(): Promise<void> {
 }
 
 loadPosts();
+
 // Theme toggle
 const toggleBtn = document.getElementById("themeToggle") as HTMLElement | null;
 const currentTheme: string | null = localStorage.getItem("theme");
@@ -68,5 +66,3 @@ toggleBtn?.addEventListener("click", () => {
     const isDark: boolean = document.body.classList.contains("dark");
     localStorage.setItem("theme", isDark ? "dark" : "light");
 });
-
-
