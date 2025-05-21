@@ -1,166 +1,287 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PostUp - Homepage</title>
-    <style>
-        :root {
-            --bg-color: #ffffff;
-            --text-color: #000000;
-            --primary-color: #3B82F6;
-            --button-bg: #8B5CF6;
-            --button-hover-bg: #6D46C1;
-        }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PostUp - Homepage</title>
+  <style>
+    :root {
+      --bg-color: #ffffff;
+      --text-color: #000000;
+      --primary-color: #3B82F6;
+      --button-bg: #8B5CF6;
+      --button-hover-bg: #6D46C1;
+      --card-bg: #ffffff;
+    }
 
-        body {
-            background-color: var(--bg-color);
-            color: var(--text-color);
-            transition: background-color 0.3s ease, color 0.3s ease;
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+    body {
+      background-color: var(--bg-color);
+      color: var(--text-color);
+      transition: background-color 0.3s ease, color 0.3s ease;
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
 
-        h1 {
-            margin-top: 50px;
-            font-size: 2.5em;
-            text-align: center;
-        }
+    h1 {
+      margin-top: 50px;
+      font-size: 2.5em;
+      text-align: center;
+    }
 
-        p {
-            font-size: 1.2em;
-            text-align: center;
-        }
+    p {
+      font-size: 1.2em;
+      text-align: center;
+    }
 
-        .container {
-            max-width: 800px;
-            margin: 20px auto;
-            padding: 20px;
-        }
+    .container {
+      max-width: 800px;
+      margin: 20px auto;
+      padding: 20px;
+    }
 
-        .dark {
-            --bg-color: #1E1E1E;
-            --text-color: #ffffff;
-            --primary-color: #8B5CF6;
-            --button-bg: #6D46C1;
-            --button-hover-bg: #5A3D99;
-        }
+    .dark {
+      --bg-color: #1E1E1E;
+      --text-color: #ffffff;
+      --primary-color: #8B5CF6;
+      --button-bg: #6D46C1;
+      --button-hover-bg: #5A3D99;
+      --card-bg: #2A2A2A;
+    }
 
-        button {
-            background-color: var(--primary-color);
-            color: #fff;
-            padding: 10px 20px;
-            border: none;
-            cursor: pointer;
-            border-radius: 8px;
-            font-size: 1em;
-            transition: background-color 0.3s ease;
-        }
+    button {
+      background-color: var(--primary-color);
+      color: #fff;
+      padding: 10px 20px;
+      border: none;
+      cursor: pointer;
+      border-radius: 8px;
+      font-size: 1em;
+      transition: background-color 0.3s ease;
+    }
 
-        button:hover {
-            background-color: var(--button-hover-bg);
-        }
+    button:hover {
+      background-color: var(--button-hover-bg);
+    }
 
-        .bottom-nav {
-            display: flex;
-            justify-content: space-around;
-            position: fixed;
-            bottom: 0;
-            width: 100%;
-            background-color: var(--bg-color);
-            padding: 10px 0;
-            box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1);
-        }
+    .bottom-nav {
+      display: flex;
+      justify-content: space-around;
+      position: fixed;
+      bottom: 0;
+      width: 100%;
+      background-color: var(--bg-color);
+      padding: 10px 0;
+      box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1);
+    }
 
-        .bottom-nav button {
-            background-color: var(--primary-color);
-            padding: 10px;
-            flex: 1;
-            border: none;
-            color: white;
-            font-size: 1em;
-            cursor: pointer;
-        }
+    .bottom-nav button {
+      background-color: var(--primary-color);
+      padding: 10px;
+      flex: 1;
+      border: none;
+      color: white;
+      font-size: 1em;
+      cursor: pointer;
+    }
 
-        .dark .bottom-nav button {
-            background-color: var(--button-bg);
-        }
+    .dark .bottom-nav button {
+      background-color: var(--button-bg);
+    }
 
-        .dark .bottom-nav button:hover {
-            background-color: var(--button-hover-bg);
-        }
+    .dark .bottom-nav button:hover {
+      background-color: var(--button-hover-bg);
+    }
 
-        /* Hidden create post form */
-        #postForm {
-            display: none;
-            margin-top: 20px;
-        }
+    .post {
+      background-color: var(--bg-color);
+      color: var(--text-color);
+      margin: 10px 0;
+      padding: 15px;
+      border-radius: 10px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
 
-        #postForm input, #postForm textarea {
-            width: 100%;
-            padding: 10px;
-            margin-bottom: 10px;
-            border-radius: 5px;
-            border: 1px solid #ccc;
-        }
+    .post h3 {
+      margin-top: 0;
+    }
 
-        #feed {
-            margin-top: 30px;
-        }
+    .code-box {
+      background-color: var(--card-bg);
+      color: var(--text-color);
+      border-radius: 12px;
+      padding: 20px;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+      white-space: pre-wrap;
+    }
 
-        .post {
-            background-color: var(--bg-color);
-            color: var(--text-color);
-            margin: 10px 0;
-            padding: 15px;
-            border-radius: 10px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        }
+    pre {
+      margin: 0;
+      overflow-x: auto;
+    }
+    .logo-img {
+  display: block;
+  margin: 30px auto 0;
+  width: 120px;
+  height: 120px;
+  object-fit: cover;
+  border-radius: 50%; /* makes it circular */
+  border: 3px solid var(--primary-color); /* adds a nice colored border */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* optional shadow */
+}
+.layout-wrapper {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 40px;
+  flex-wrap: wrap; /* responsive on smaller screens */
+  padding: 20px;
+}
 
-        .post h3 {
-            margin-top: 0;
-        }
-    </style>
+.instructions-box {
+  flex: 1 1 250px;
+  max-width: 250px;
+  background-color: var(--card-bg);
+  color: var(--text-color);
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  font-size: 0.95em;
+}
+
+.instructions-box ul {
+  padding-left: 20px;
+}
+
+.instructions-box li {
+  margin-bottom: 10px;
+}
+#themeToggle {
+  display: block;
+  margin: 10px auto;
+  padding: 8px 18px;
+  font-size: 0.95em;
+}
+
+
+  </style>
 </head>
 <body>
-    <div class="container">
-        <h1>Welcome to PostUp!</h1>
-        <p>Every programmer's home.</p>
-        <button id="themeToggle">Toggle Theme</button>
+    <div class="layout-wrapper">
+        <!-- Sidebar Instructions -->
+        <aside class="instructions-box">
+          <h2>📘 How to Use PostUp</h2>
+          <ul>
+            <li>📝 Create posts in the <strong>Feed</strong> tab</li>
+            <li>💬 Comment and like other posts</li>
+            <li>👤 View your profile in <strong>My Profile</strong></li>
+            <li>🌗 Toggle between light and dark mode</li>
+          </ul>
+        </aside>
+      
+        <!-- Main Content -->
+        <div class="container">
+          <img src="logo-postup.png" alt="PostUp Logo" class="logo-img">
+          <h1>Welcome to PostUp!</h1>
+          <p>Every programmer's home.</p>
+          <button id="themeToggle">Toggle Theme</button>
+      
+          <!-- Tip of the Day -->
+          <div style="margin-top: 30px; text-align: center;">
+            <h2>💡 Tip of the Day</h2>
+            <p id="dailyTip" style="font-style: italic;"></p>
+          </div>
+      
+          <!-- Programming Language Basics -->
+          <!-- (Keep your code boxes here like before) -->
+      
+          <!-- Recent Posts -->
+          
+          <div id="feed"></div>
+        </div>
+      </div>
+      
+    <!-- Programming Language Basics -->
+    <div style="margin-top: 50px;">
+      <h2 style="text-align:center;">🛠️ Programming Language Basics</h2>
 
- 
-        <!-- Post Feed -->
-        <h2 style="margin-top: 40px;">Recent Posts</h2>
-        <div id="feed"></div>
+      <div style="display: flex; flex-direction: column; gap: 20px;">
+        <div class="code-box">
+          <h3>🐍 Python</h3>
+          <pre><code># Print text
+print("Hello, world!")
+
+# If statement
+if x > 5:
+    print("Big")
+
+# Function
+def greet(name):
+    return "Hi " + name</code></pre>
+        </div>
+
+        <div class="code-box">
+          <h3>🟨 JavaScript</h3>
+          <pre><code>// Print to console
+console.log("Hello");
+
+// If statement
+if (x > 5) {
+  console.log("Big");
+}
+
+// Function
+function greet(name) {
+  return "Hi " + name;
+}</code></pre>
+        </div>
+
+        <div class="code-box">
+          <h3>🔵 C#</h3>
+          <pre><code>// Print
+Console.WriteLine("Hello");
+
+// If statement
+if (x > 5)
+{
+  Console.WriteLine("Big");
+}
+
+// Function
+string Greet(string name)
+{
+  return "Hi " + name;
+}</code></pre>
+        </div>
+      </div>
     </div>
 
-    <!-- Bottom Navigation -->
-    <div class="bottom-nav">
-        <button onclick="window.location.href='homepage.html'">Home</button>
-        <button onclick="window.location.href='profile.html'">My Profile</button>
-        <button id="createPostBtn" onclick="window.location.href='createPost.html'">Create Post</button>
+    <!-- Recent Posts Header (optional placeholder) -->
+   
+    <div id="feed"></div>
+  </div>
 
-    </div>
+  <!-- Bottom Navigation -->
+  <div class="bottom-nav">
+    <button onclick="window.location.href='homepage.html'">Home</button>
+    <button onclick="window.location.href='profile.html'">My Profile</button>
+    <button id="createPostBtn" onclick="window.location.href='createPost.html'">Feed</button>
+  </div>
 
-    <script>
-     
-    
-        // Theme toggle
-        const toggleBtn = document.getElementById("themeToggle");
-        const currentTheme = localStorage.getItem("theme");
-    
-        if (currentTheme === "dark") {
-            document.body.classList.add("dark");
-        }
-    
-        toggleBtn?.addEventListener("click", () => {
-            document.body.classList.toggle("dark");
-            const isDark = document.body.classList.contains("dark");
-            localStorage.setItem("theme", isDark ? "dark" : "light");
-        });
-    </script>
-    
+<script>
+    // Tip of the Day
+    const tips = [
+      "Use meaningful variable names.",
+      "Break your code into functions.",
+      "Use version control like Git.",
+      "Debug with console.log or breakpoints.",
+      "Write comments for tricky logic.",
+      "Test your code with different inputs."
+    ];
+    const tip = tips[Math.floor(Math.random() * tips.length)];
+    document.getElementById("dailyTip").textContent = tip;
+  </script>
 </body>
 </html>

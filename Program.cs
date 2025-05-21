@@ -29,13 +29,10 @@ class Program
       else if (request.Path == "profile")
       {
         var userId = request.GetBody<string>();
-        Console.WriteLine($"Looking up profile with ID: {userId}");
-
         var user = database.Users.FirstOrDefault(u => u.Id == userId);
-        Console.WriteLine("user: " + user);
+
         if (user != null)
         {
-          Console.WriteLine("responding");
           response.Send(new
           {
             username = user.Username,
@@ -68,6 +65,23 @@ class Program
           response.Send("Username already exists");
         }
       }
+      else if (path == "updatebio")
+      {
+        var (userId, newBio) = request.GetBody<(string, string)>();
+        var user = database.Users.FirstOrDefault(u => u.Id == userId);
+
+        if (user != null)
+        {
+          user.Bio = newBio;
+          database.SaveChanges();
+          response.Send("Bio updated");
+        }
+        else
+        {
+          response.SetStatusCode(404);
+          response.Send("User not found");
+        }
+      }
       else if (path == "login")
       {
         var (username, password) = request.GetBody<(string, string)>();
@@ -90,6 +104,23 @@ class Program
           response.Send("Invalid credentials");
         }
       }
+      else if (path == "getuserposts")
+      {
+        var userId = request.GetBody<string>();
+        var posts = database.Posts
+          .Where(p => p.UserId == userId)
+          .OrderByDescending(p => p.CreatedAt)
+          .Select(p => new
+          {
+            p.Id,
+            Title = p.Title,
+            Content = p.Content,
+            CreatedAt = p.CreatedAt.ToString("o")
+          })
+          .ToList();
+
+        response.Send(posts);
+      }
       else if (path == "createpost")
       {
         var (userId, title, content) = request.GetBody<(string, string, string)>();
@@ -109,16 +140,69 @@ class Program
       else if (path == "getposts")
       {
         var posts = database.Posts
-            .OrderByDescending(p => p.CreatedAt)
-            .Select(p => new
-            {
-              title = p.Title,
-              content = p.Content,
-              createdAt = p.CreatedAt
-            })
-            .ToList();
+          .OrderByDescending(p => p.CreatedAt)
+          .Select(p => new
+          {
+            id = p.Id,
+            title = p.Title,
+            content = p.Content,
+            createdAt = p.CreatedAt,
+            username = database.Users.FirstOrDefault(u => u.Id == p.UserId)!.Username
+          })
+          .ToList();
 
         response.Send(posts);
+      }
+      else if (path == "likepost")
+      {
+        var (postId, userId) = request.GetBody<(int, string)>();
+        var alreadyLiked = database.Likes.Any(l => l.PostId == postId && l.UserId == userId);
+
+        if (!alreadyLiked)
+        {
+          database.Likes.Add(new Like { PostId = postId, UserId = userId });
+          database.SaveChanges();
+          response.Send("Liked");
+        }
+        else
+        {
+          response.Send("Already liked");
+        }
+      }
+      else if (path == "getlikes")
+      {
+        var postId = request.GetBody<int>();
+        var likeCount = database.Likes.Count(l => l.PostId == postId);
+        response.Send(likeCount);
+      }
+      else if (path == "addcomment")
+      {
+        var (postId, userId, content) = request.GetBody<(int, string, string)>();
+        var comment = new Comment
+        {
+          PostId = postId,
+          UserId = userId,
+          Content = content
+        };
+        database.Comments.Add(comment);
+        database.SaveChanges();
+        response.Send("Comment added");
+      }
+      else if (path == "getcomments")
+      {
+        var postId = request.GetBody<int>();
+        var comments = database.Comments
+          .Where(c => c.PostId == postId)
+          .OrderBy(c => c.CreatedAt)
+          .Select(c => new
+          {
+            c.UserId,
+            c.Content,
+            c.CreatedAt
+          })
+          .ToList();
+
+        response.Send(comments);
       }
       else if (request.ExpectsHtml())
       {
@@ -141,6 +225,8 @@ public class Database : DbContext
 {
   public DbSet<User> Users { get; set; } = default!;
   public DbSet<Post> Posts { get; set; } = default!;
+  public DbSet<Comment> Comments { get; set; } = default!;
+  public DbSet<Like> Likes { get; set; } = default!;
 
   protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
   {
@@ -181,4 +267,22 @@ public class Post
   public string Title { get; set; }
   public string Content { get; set; }
   public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+}
+
+public class Comment
+{
+  [Key]
+  public int Id { get; set; }
+  public int PostId { get; set; }
+  public string UserId { get; set; }
+  public string Content { get; set; }
+  public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+}
+
+public class Like
+{
+  [Key]
+  public int Id { get; set; }
+  public int PostId { get; set; }
+  public string UserId { get; set; }
 }

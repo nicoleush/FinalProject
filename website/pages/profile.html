@@ -4,30 +4,122 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>User Profile</title>
-  <link id="theme-style" rel="stylesheet" href="../../styles/light-mode.css">
+
+
 
   <style>
-    body {
-      font-family: Arial, sans-serif;
-      margin: 0;
-      padding: 20px;
+        :root {
+            --bg-color: #ffffff;
+            --text-color: #000000;
+            --primary-color: #3B82F6;
+            --button-bg: #8B5CF6;
+            --button-hover-bg: #6D46C1;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            transition: background-color 0.3s ease, color 0.3s ease;
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        h1 {
+            margin-top: 50px;
+            font-size: 2.5em;
+            text-align: center;
+        }
+
+        p {
+            font-size: 1.2em;
+            text-align: center;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+        }
+
+        .dark {
+            --bg-color: #1E1E1E;
+            --text-color: #ffffff;
+            --primary-color: #8B5CF6;
+            --button-bg: #6D46C1;
+            --button-hover-bg: #5A3D99;
+        }
+
+        button {
+            background-color: var(--primary-color);
+            color: #fff;
+            padding: 10px 20px;
+            border: none;
+            cursor: pointer;
+            border-radius: 8px;
+            font-size: 1em;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: var(--button-hover-bg);
+        }
+
+
+
+        .dark .bottom-nav button {
+            background-color: var(--button-bg);
+        }
+
+        .dark .bottom-nav button:hover {
+            background-color: var(--button-hover-bg);
+        }
+        #avatar {
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  display: block;
+  margin: 20px auto;
+}
+#signOutBtn {
+  background-color: #e53e3e;
+}
+#signOutBtn:hover {
+  background-color: #c53030;
+}
+.bottom-nav {
+      display: flex;
+      justify-content: space-around;
+      position: fixed;
+      bottom: 0;
+      width: 100%;
+      background-color: var(--bg-color);
+      padding: 10px 0;
+      box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1);
     }
-    .profile-container {
-      max-width: 500px;
-      margin: auto;
-    }
-    .profile-container img {
-      max-width: 200px;
-      border-radius: 10px;
-    }
-    .dark-mode {
-      background-color: #121212;
+
+    .bottom-nav button {
+      background-color: var(--primary-color);
+      padding: 10px;
+      flex: 1;
+      border: none;
       color: white;
+      font-size: 1em;
+      cursor: pointer;
     }
-    .light-mode {
-      background-color: white;
-      color: black;
+
+    .dark .bottom-nav button {
+      background-color: var(--button-bg);
     }
+
+    .dark .bottom-nav button:hover {
+      background-color: var(--button-hover-bg);
+    }
+
+
+    
+
   </style>
 </head>
 <body>
@@ -35,18 +127,42 @@
     <h1>User Profile</h1>
     <p>Username: <span id="username"></span></p>
     <p>Bio: <span id="bio"></span></p>
+    <div style="text-align: center; margin-top: 20px;">
+        <textarea id="bioInput" placeholder="Write your bio here..." rows="4" style="width:80%; border-radius: 8px; padding: 10px; border: 1px solid #ccc;"></textarea>
+        <br><br>
+        <button id="saveBioBtn">Save Bio</button>
+        
+      </div>
+      
     <img id="avatar" src="../assets/imgs/default.jpg" alt="Avatar" />
+    <h2 style="text-align: center; margin-top: 40px;">📝 My Posts</h2>
+    <div id="myPosts"></div>
+    
 
     <br><br>
-    <button id="themeToggle">Switch Theme</button>
+    <button id="themeToggle">Toggle Theme</button>
+    <button id="signOutBtn" style="margin-top: 20px;">Sign Out</button>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
 
-    
+
+     <!-- Bottom Navigation -->
+  <div class="bottom-nav">
+    <button onclick="window.location.href='homepage.html'">Home</button>
+    <button onclick="window.location.href='profile.html'">My Profile</button>
+    <button id="createPostBtn" onclick="window.location.href='createPost.html'">Feed</button>
+  </div>
+
     
 
   </div>
 
   <script src="profile.js" type="module"></script>
   <script src="toggleBtn.js" type="module"></script>
+ 
   
 
   
