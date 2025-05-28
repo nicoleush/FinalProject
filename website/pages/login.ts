@@ -1,20 +1,26 @@
 import { send } from "../utilities";
 
-let username = document.querySelector("#username") as HTMLInputElement;
-let password = document.querySelector("#password") as HTMLInputElement;
-let loginbutton = document.querySelector(".loginbutton") as HTMLButtonElement;
-let message = document.querySelector("#message") as HTMLDivElement;
+const loginBtn = document.getElementById("loginBtn") as HTMLButtonElement;
+const usernameInput = document.getElementById("username") as HTMLInputElement;
+const passwordInput = document.getElementById("password") as HTMLInputElement;
+const messageDiv = document.getElementById("message") as HTMLDivElement;
 
+loginBtn.onclick = async () => {
+  const username = usernameInput.value.trim();
+  const password = passwordInput.value.trim();
 
-    loginbutton.onclick = async function () {
-      let id = await send("login", [username.value, password.value]) as string | null;
-  
-      if (id == null) {
-        username.value = "";
-        password.value = "";
-        message.innerText = "Username or Password were incorrect";
-      } else {
-        localStorage.setItem("userId", id);
-        location.href = "index.html";
-      }
-    };
+  if (!username || !password) {
+    messageDiv.textContent = "Please fill in both fields.";
+    return;
+  }
+
+  const result = await send("login", [username, password]);
+
+  if (typeof result === "object" && result.userId) {
+    localStorage.setItem("userId", result.userId);
+    localStorage.setItem("theme", result.theme || "light");
+    location.href = "homepage.html";
+  } else {
+    messageDiv.textContent = "Invalid username or password.";
+  }
+};

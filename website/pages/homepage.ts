@@ -1,4 +1,5 @@
-
+import { setupThemeToggle } from "./toggleTheme";
+import { send } from "../utilities";
 
 window.addEventListener("DOMContentLoaded", () => {
   setupThemeToggle("themeToggle");
@@ -18,9 +19,25 @@ window.addEventListener("DOMContentLoaded", () => {
     tipElement.textContent = tip;
   }
 });
-import { setupThemeToggle } from "./toggleTheme";
+const searchInput = document.getElementById("searchInput") as HTMLInputElement;
+const searchButton = document.getElementById("searchButton") as HTMLButtonElement;
 
-window.addEventListener("DOMContentLoaded", () => {
-  setupThemeToggle("themeToggle");
-});
+searchButton.onclick = async function () {
+  const searchQuery = searchInput.value.trim();
 
+  if (!searchQuery) {
+    alert("Please enter a username to search.");
+    return;
+  }
+
+  const results = await send("searchUsers", searchQuery) as { Id: string, Username: string }[];
+  console.log(results);
+
+  if (results.length === 0) {
+    alert("No user found.");
+    return;
+  }
+
+  const firstUser = results[0];
+  window.location.href = `profile.html?userId=${firstUser.Id}`;
+};

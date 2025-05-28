@@ -204,6 +204,20 @@ class Program
 
         response.Send(comments);
       }
+ else if (path == "searchusers")
+{
+  var searchTerm = request.GetBody<string>().ToLower();
+  var users = database.Users
+    .Where(u => u.Username.ToLower().Contains(searchTerm))
+    .Select(u => new {
+      u.Id,
+      u.Username,
+      u.AvatarUrl
+    }).ToList();
+
+  response.Send(users);
+}
+
       else if (request.ExpectsHtml())
       {
         var file = new File("website/pages/404.html");
@@ -240,49 +254,66 @@ public class User
   public string Id { get; set; }
   public string Username { get; set; }
   public string Password { get; set; }
-  public string Email { get; set; } = "";
-  public string Bio { get; set; } = "";
-  public string AvatarUrl { get; set; } = "";
-  public string Theme { get; set; } = "light";
-
-  public User() { }
+  public string Email { get; set; }
+  public string Bio { get; set; }
+  public string AvatarUrl { get; set; }
+  public string Theme { get; set; }
 
   public User(string id, string username, string password, string email = "", string bio = "", string avatarUrl = "", string theme = "light")
   {
     Id = id;
     Username = username;
     Password = password;
-    Email = email ?? "";
-    Bio = bio ?? "";
-    AvatarUrl = avatarUrl ?? "";
-    Theme = theme ?? "light";
+    Email = email;
+    Bio = bio;
+    AvatarUrl = avatarUrl;
+    Theme = theme;
   }
 }
 
 public class Post
 {
-  [Key]
-  public int Id { get; set; }
+  [Key] public int Id { get; set; }
   public string UserId { get; set; }
   public string Title { get; set; }
   public string Content { get; set; }
   public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+  public Post() { }
+  public Post(string userId, string title, string content)
+  {
+    UserId = userId;
+    Title = title;
+    Content = content;
+  }
 }
 
 public class Comment
 {
-  [Key]
-  public int Id { get; set; }
+  [Key] public int Id { get; set; }
   public int PostId { get; set; }
   public string UserId { get; set; }
   public string Content { get; set; }
   public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+  public Comment() { }
+
+  public Comment(int postId, string userId, string content)
+  {
+    PostId = postId;
+    UserId = userId;
+    Content = content;
+  }
 }
 
 public class Like
 {
-  [Key]
-  public int Id { get; set; }
+  [Key] public int Id { get; set; }
   public int PostId { get; set; }
   public string UserId { get; set; }
+  public Like() { }
+
+  public Like(int postId, string userId)
+  {
+    PostId = postId;
+    UserId = userId;
+  }
 }

@@ -180,6 +180,12 @@
             <li>🌗 Toggle between light and dark mode</li>
           </ul>
         </aside>
+        <div style="text-align: center; margin-top: 30px;">
+            <input type="text" id="searchInput" placeholder="Search users..." style="padding: 10px; width: 200px; border-radius: 8px; border: 1px solid #ccc;">
+            <button id="searchButton">Search</button>
+          </div>
+          <ul id="searchUl"></ul>
+               
       
         <!-- Main Content -->
         <div class="container">
@@ -270,18 +276,8 @@ string Greet(string name)
     <button id="createPostBtn" onclick="window.location.href='createPost.html'">Feed</button>
   </div>
 
-<script>
-    // Tip of the Day
-    const tips = [
-      "Use meaningful variable names.",
-      "Break your code into functions.",
-      "Use version control like Git.",
-      "Debug with console.log or breakpoints.",
-      "Write comments for tricky logic.",
-      "Test your code with different inputs."
-    ];
-    const tip = tips[Math.floor(Math.random() * tips.length)];
-    document.getElementById("dailyTip").textContent = tip;
-  </script>
+
+  <script src="homepage.js" type="module"></script>
+
 </body>
 </html>

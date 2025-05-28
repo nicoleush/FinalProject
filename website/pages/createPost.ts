@@ -1,27 +1,48 @@
 import { send } from "../utilities";
+import { setupThemeToggle } from "./toggleTheme";
 
-let submitButton = document.querySelector("#submitPost") as HTMLButtonElement;
-const userId: string | null = localStorage.getItem("userId");
+window.addEventListener("DOMContentLoaded", () => {
+  setupThemeToggle("themeToggle");
 
-submitButton.onclick = async function () {
-  const titleInput = document.getElementById("postTitle") as HTMLInputElement;
-  const contentInput = document.getElementById("postContent") as HTMLTextAreaElement;
+  const tips = [
+    "Use meaningful variable names.",
+    "Break your code into functions.",
+    "Use version control like Git.",
+    "Debug with console.log or breakpoints.",
+    "Write comments for tricky logic.",
+    "Test your code with different inputs."
+  ];
 
-  const title = titleInput.value.trim();
-  const content = contentInput.value.trim();
-
-  if (!title || !content) {
-    alert("Please fill in both title and content!");
-    return;
+  const tipElement = document.getElementById("dailyTip");
+  if (tipElement) {
+    const tip = tips[Math.floor(Math.random() * tips.length)];
+    tipElement.textContent = tip;
   }
 
-  await send("createPost", [userId, title, content]);
-  titleInput.value = "";
-  contentInput.value = "";
-  loadPosts();
-};
+  let submitButton = document.querySelector("#submitPost") as HTMLButtonElement;
+  const userId: string | null = localStorage.getItem("userId");
 
-// Load posts and display them
+  submitButton.onclick = async function () {
+    const titleInput = document.getElementById("postTitle") as HTMLInputElement;
+    const contentInput = document.getElementById("postContent") as HTMLTextAreaElement;
+
+    const title = titleInput.value.trim();
+    const content = contentInput.value.trim();
+
+    if (!title || !content) {
+      alert("Please fill in both title and content!");
+      return;
+    }
+
+    await send("createPost", [userId, title, content]);
+    titleInput.value = "";
+    contentInput.value = "";
+    loadPosts();
+  };
+
+  loadPosts();
+});
+
 async function loadPosts(): Promise<void> {
   const posts = await send("getPosts", {});
   const feed = document.getElementById("feed") as HTMLElement;
@@ -45,13 +66,14 @@ async function loadPosts(): Promise<void> {
 
     const likeBtn = document.createElement("button");
     likeBtn.textContent = "Like ❤️";
+    const likeCountElem = document.createElement("span");
+    likeCountElem.style.marginLeft = "10px";
+
     likeBtn.onclick = async () => {
-      await send("likePost", [post.id, userId]);
+      await send("likePost", [post.id, localStorage.getItem("userId")]);
       updateLikeCount(post.id, likeCountElem);
     };
 
-    const likeCountElem = document.createElement("span");
-    likeCountElem.style.marginLeft = "10px";
     await updateLikeCount(post.id, likeCountElem);
 
     const commentBox = document.createElement("div");
@@ -63,18 +85,19 @@ async function loadPosts(): Promise<void> {
 
     const commentBtn = document.createElement("button");
     commentBtn.textContent = "Comment";
+    const commentsContainer = document.createElement("div");
+    commentsContainer.style.marginTop = "10px";
+    commentsContainer.style.paddingLeft = "10px";
+
     commentBtn.onclick = async () => {
       const commentText = commentInput.value.trim();
       if (commentText) {
-        await send("addComment", [post.id, userId, commentText]);
+        await send("addComment", [post.id, localStorage.getItem("userId"), commentText]);
         commentInput.value = "";
         await loadComments(post.id, commentsContainer);
       }
     };
 
-    const commentsContainer = document.createElement("div");
-    commentsContainer.style.marginTop = "10px";
-    commentsContainer.style.paddingLeft = "10px";
     await loadComments(post.id, commentsContainer);
 
     commentBox.appendChild(commentInput);
@@ -82,7 +105,7 @@ async function loadPosts(): Promise<void> {
     commentBox.appendChild(commentsContainer);
 
     postDiv.appendChild(title);
-    postDiv.appendChild(author);     // 👈 Added
+    postDiv.appendChild(author);
     postDiv.appendChild(content);
     postDiv.appendChild(timestamp);
     postDiv.appendChild(likeBtn);
@@ -110,24 +133,3 @@ async function loadComments(postId: number, container: HTMLElement): Promise<voi
     container.appendChild(p);
   });
 }
-
-loadPosts();
-
-// Theme toggle
-const toggleBtn = document.getElementById("themeToggle") as HTMLElement | null;
-const currentTheme = localStorage.getItem("theme");
-
-if (currentTheme === "dark") {
-  document.body.classList.add("dark");
-}
-
-toggleBtn?.addEventListener("click", () => {
-  document.body.classList.toggle("dark");
-  const isDark = document.body.classList.contains("dark");
-  localStorage.setItem("theme", isDark ? "dark" : "light");
-});
-import { setupThemeToggle } from "./toggleTheme";
-
-window.addEventListener("DOMContentLoaded", () => {
-  setupThemeToggle("themeToggle");
-});

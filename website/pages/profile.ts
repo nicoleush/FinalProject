@@ -18,7 +18,10 @@ interface User {
   theme?: string;
 }
 
-const userId = localStorage.getItem("userId");
+const urlParams = new URLSearchParams(window.location.search);
+const userIdFromUrl = urlParams.get("userId");
+const loggedInUserId = localStorage.getItem("userId");
+const userId = userIdFromUrl || loggedInUserId;
 
 if (!userId) {
   window.location.href = "login.html";
@@ -29,28 +32,34 @@ async function loadProfile() {
 
   document.getElementById("username")!.textContent = user.username;
   document.getElementById("bio")!.textContent = user.bio;
-  const bioInput = document.getElementById("bioInput") as HTMLTextAreaElement;
-const saveBioBtn = document.getElementById("saveBioBtn") as HTMLButtonElement;
 
-if (bioInput && saveBioBtn) {
-  bioInput.value = user.bio;
-  saveBioBtn.onclick = async () => {
-    const newBio = bioInput.value.trim();
-    if (newBio) {
-      await send("updatebio", [userId, newBio]);
-      document.getElementById("bio")!.textContent = newBio;
-      alert("Bio updated!");
-    } else {
-      alert("Bio cannot be empty.");
-    }
-  };
-}
+  const bioInput = document.getElementById("bioInput") as HTMLTextAreaElement;
+  const saveBioBtn = document.getElementById("saveBioBtn") as HTMLButtonElement;
+
+  if (userId === loggedInUserId && bioInput && saveBioBtn) {
+    bioInput.value = user.bio;
+    saveBioBtn.onclick = async () => {
+      const newBio = bioInput.value.trim();
+      if (newBio) {
+        await send("updatebio", [userId, newBio]);
+        document.getElementById("bio")!.textContent = newBio;
+        alert("Bio updated!");
+      } else {
+        alert("Bio cannot be empty.");
+      }
+    };
+  } else {
+    // Hide bio edit controls for other users
+    bioInput.style.display = "none";
+    saveBioBtn.style.display = "none";
+  }
 
   (document.getElementById("avatar") as HTMLImageElement).src =
     user.avatarUrl || "../../assets/imgs/default.jpg";
-    const savedTheme = localStorage.getItem("theme") || "light";
-    applyTheme(savedTheme);
-    
+
+  const savedTheme = localStorage.getItem("theme") || "light";
+  applyTheme(savedTheme);
+
   loadUserPosts();
 }
 
@@ -69,41 +78,36 @@ async function loadUserPosts() {
     postDiv.style.maxWidth = "600px";
     postDiv.style.backgroundColor = "#f9f9f9";
     postDiv.style.boxShadow = "0 2px 8px rgba(0, 0, 0, 0.05)";
-    
-    
+
     const title = document.createElement("h3");
-    title.textContent = post.Title; // ← backend sends "Title" not "title"
+    title.textContent = post.Title;
     title.style.textAlign = "center";
-title.style.marginBottom = "10px";
-title.style.fontSize = "1.5em";
-title.style.color = "#333";
-
-
+    title.style.marginBottom = "10px";
+    title.style.fontSize = "1.5em";
+    title.style.color = "#333";
 
     const content = document.createElement("p");
-    content.textContent = post.Content; // ← same here
+    content.textContent = post.Content;
     content.style.textAlign = "left";
-content.style.lineHeight = "1.6";
-content.style.fontSize = "1em";
-content.style.color = "#444";
+    content.style.lineHeight = "1.6";
+    content.style.fontSize = "1em";
+    content.style.color = "#444";
 
-const likeCount = document.createElement("p");
-likeCount.style.fontSize = "0.9em";
-likeCount.style.color = "#666";
-likeCount.style.marginTop = "10px";
-likeCount.textContent = "❤️ loading likes...";
+    const likeCount = document.createElement("p");
+    likeCount.style.fontSize = "0.9em";
+    likeCount.style.color = "#666";
+    likeCount.style.marginTop = "10px";
+    likeCount.textContent = "❤️ loading likes...";
 
-// Fetch the real number of likes
-send("getLikes", post.Id).then((count) => {
-  likeCount.textContent = `❤️ ${count} Likes`;
-}).catch(() => {
-  likeCount.textContent = "❤️ Likes not available";
-});
-
-postDiv.appendChild(likeCount);
+    send("getLikes", post.Id).then((count) => {
+      likeCount.textContent = `❤️ ${count} Likes`;
+    }).catch(() => {
+      likeCount.textContent = "❤️ Likes not available";
+    });
 
     postDiv.appendChild(title);
     postDiv.appendChild(content);
+    postDiv.appendChild(likeCount);
     container.appendChild(postDiv);
   }
 }
@@ -121,9 +125,4 @@ window.addEventListener("DOMContentLoaded", () => {
       window.location.href = "index.html";
     }
   });
-});
-import { setupThemeToggle } from "./toggleTheme";
-
-window.addEventListener("DOMContentLoaded", () => {
-  setupThemeToggle("themeToggle");
 });

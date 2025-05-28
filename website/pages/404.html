@@ -1,18 +1,116 @@
 <!DOCTYPE html>
-<html>
-
+<html lang="en">
 <head>
-  <title>404</title>
-</head>
+  <meta charset="UTF-8">
+  <title>404 - Glitch Screen</title>
+  <link rel="icon" href="favicon.png">
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background: #0f0f0f;
+      color: #33ff33;
+      font-family: 'Courier New', monospace;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      overflow: hidden;
+    }
 
+    .glitch {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      background: repeating-linear-gradient(
+        0deg,
+        rgba(0, 255, 0, 0.1),
+        rgba(0, 255, 0, 0.1) 1px,
+        transparent 2px,
+        transparent 4px
+      );
+      backdrop-filter: blur(2px);
+      animation: flicker 0.6s steps(1) infinite;
+      z-index: 10;
+    }
+
+    @keyframes flicker {
+      0% { transform: translateY(0); opacity: 1; }
+      50% { transform: translateY(2px); opacity: 0.8; }
+      100% { transform: translateY(-1px); opacity: 1; }
+    }
+
+    .terminal {
+      background-color: #1a1a1a;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 0 10px #00ff00;
+      max-width: 800px;
+      width: 90%;
+      text-align: left;
+      opacity: 0;
+      transform: scale(1.02);
+      transition: opacity 0.8s ease, transform 0.5s ease;
+      z-index: 1;
+    }
+
+    .terminal.visible {
+      opacity: 1;
+      transform: scale(1);
+    }
+
+    .line {
+      line-height: 1.6;
+    }
+
+    .error {
+      color: red;
+    }
+
+    .comment {
+      color: #999;
+    }
+
+    a {
+      display: inline-block;
+      margin-top: 30px;
+      color: #00ffff;
+      text-decoration: none;
+      border: 1px solid #00ffff;
+      padding: 10px 20px;
+      border-radius: 6px;
+      transition: background-color 0.3s, color 0.3s;
+    }
+
+    a:hover {
+      background-color: #00ffff;
+      color: #000;
+    }
+  </style>
+</head>
 <body>
 
-  <h1>404 - Not Found</h1>
-  <div>The page you were looking for doesn't exist :(</div>
-  
-  <br>
+  <div class="glitch" id="glitchEffect"></div>
 
-  <a href="/website/pages/index.html">Go to the main page</a>
+  <div class="terminal" id="terminal">
+    <div class="line comment">// 404 Error - Page Not Found</div>
+    <div class="line">> Attempting to compile requested page...</div>
+    <div class="line error">> Error: Cannot resolve module 'page-you-wanted.html'</div>
+    <div class="line">> Searching for fallback...</div>
+    <div class="line">> Fallback not found.</div>
+    <div class="line">> Suggestion: Check your URL or go back to the homepage.</div>
+
+    <a href="/website/pages/index.html">Return to Homepage</a>
+  </div>
+
+  <script>
+    const glitch = document.getElementById("glitchEffect");
+    const terminal = document.getElementById("terminal");
+
+    setTimeout(() => {
+      glitch.remove(); // Clean removal of glitch effect
+      terminal.classList.add("visible");
+    }, 2000); // 2 seconds of glitch before reveal
+  </script>
 </body>
-
 </html>
