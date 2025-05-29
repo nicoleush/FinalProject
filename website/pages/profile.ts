@@ -1,15 +1,5 @@
+import { setupThemeToggle } from "./toggleTheme";
 import { send } from "../utilities";
-
-function applyTheme(theme: string): void {
-  document.body.classList.toggle("dark", theme === "dark");
-}
-
-function toggleTheme(): void {
-  const currentTheme = localStorage.getItem("theme") || "light";
-  const newTheme = currentTheme === "light" ? "dark" : "light";
-  localStorage.setItem("theme", newTheme);
-  applyTheme(newTheme);
-}
 
 interface User {
   username: string;
@@ -26,6 +16,22 @@ const userId = userIdFromUrl || loggedInUserId;
 if (!userId) {
   window.location.href = "login.html";
 }
+
+window.addEventListener("DOMContentLoaded", () => {
+  setupThemeToggle("themeToggle");
+  loadProfile();
+
+  const toggleBtn = document.getElementById("themeToggle");
+  toggleBtn?.addEventListener("click", toggleTheme);
+
+  const signOutBtn = document.getElementById("signOutBtn");
+  signOutBtn?.addEventListener("click", () => {
+    if (confirm("Are you sure you want to sign out?")) {
+      localStorage.clear();
+      window.location.href = "index.html";
+    }
+  });
+});
 
 async function loadProfile() {
   const user = await send("profile", userId!) as User;
@@ -49,7 +55,6 @@ async function loadProfile() {
       }
     };
   } else {
-    // Hide bio edit controls for other users
     bioInput.style.display = "none";
     saveBioBtn.style.display = "none";
   }
@@ -112,17 +117,16 @@ async function loadUserPosts() {
   }
 }
 
-window.addEventListener("DOMContentLoaded", () => {
-  loadProfile();
+// Dummy theme toggle function placeholder if missing
+function toggleTheme() {
+  document.body.classList.toggle("dark");
+}
 
-  const toggleBtn = document.getElementById("themeToggle");
-  toggleBtn?.addEventListener("click", toggleTheme);
-
-  const signOutBtn = document.getElementById("signOutBtn");
-  signOutBtn?.addEventListener("click", () => {
-    if (confirm("Are you sure you want to sign out?")) {
-      localStorage.clear();
-      window.location.href = "index.html";
-    }
-  });
-});
+// Dummy applyTheme if missing
+function applyTheme(theme: string) {
+  if (theme === "dark") {
+    document.body.classList.add("dark");
+  } else {
+    document.body.classList.remove("dark");
+  }
+}
