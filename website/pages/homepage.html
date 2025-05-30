@@ -168,6 +168,59 @@
   font-size: 0.95em;
 }
 
+  .search-wrapper {
+    position: relative;
+    width: 220px;
+    margin: 30px auto 0;
+  }
+
+  #searchInput {
+    padding: 10px;
+    width: 100%;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+  }
+
+  #searchUl {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    list-style: none;
+    margin: 5px 0 0;
+    padding: 0;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    background-color: white;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    max-height: 200px;
+    overflow-y: auto;
+    z-index: 10;
+    color: black;
+  }
+
+  #searchUl li {
+    padding: 10px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+  }
+
+  #searchUl li:hover {
+    background-color: #f0f0f0;
+  }
+
+  /* 🌙 מצב כהה */
+  .dark #searchUl {
+    background-color: #2a2a2a;
+    color: white;
+    border: 1px solid #444;
+  }
+
+  .dark #searchUl li:hover {
+    background-color: #3a3a3a;
+  }
+</style>
 
   </style>
   <link href="https://fonts.googleapis.com/css2?family=Fira+Code&family=Inter&display=swap" rel="stylesheet">
@@ -185,12 +238,14 @@
             <li>🌗 Toggle between light and dark mode</li>
           </ul>
         </aside>
-        <div style="text-align: center; margin-top: 30px;">
-            <input type="text" id="searchInput" placeholder="Search users..." style="padding: 10px; width: 200px; border-radius: 8px; border: 1px solid #ccc;">
-            <button id="searchButton">Search</button>
-          </div>
-          <ul id="searchUl"></ul>
-               
+        
+       <div class="search-wrapper">
+  <input type="text" id="searchInput" placeholder="Search users...">
+     <button id="searchButton">Search</button>
+  <ul id="searchUl"></ul>
+</div>
+
+
       
         <!-- Main Content -->
         <div class="container">

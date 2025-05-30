@@ -12,20 +12,22 @@ class Program
     Console.WriteLine($"Main Page: http://localhost:{port}/website/pages/index.html");
 
     var database = new Database();
-    database.Database.EnsureCreated();
+    database.Database.EnsureCreated(); // אם אין עדיין מסד נתונים - תיצור אותו
 
     while (true)
     {
-      (var request, var response) = server.WaitForRequest();
+      (var request, var response) = server.WaitForRequest(); // מחכה לבקשה מהדפדפן
       Console.WriteLine($"Received a request with the path: {request.Path}");
 
       string path = request.Path.ToLower().TrimStart('/');
 
+      // שליחת קבצים סטטיים (כמו HTML/CSS)
       if (File.Exists(request.Path))
       {
         var file = new File(request.Path);
         response.Send(file);
       }
+      // נתיב שמביא פרופיל לפי מזהה משתמש
       else if (request.Path == "profile")
       {
         var userId = request.GetBody<string>();
@@ -47,6 +49,7 @@ class Program
           response.Send("User not found");
         }
       }
+      // נתיב הרשמה של משתמש חדש
       else if (path == "signup")
       {
         var (username, password, theme, bio, avatarUrl) = request.GetBody<(string, string, string, string, string)>();
@@ -65,6 +68,7 @@ class Program
           response.Send("Username already exists");
         }
       }
+      // עדכון הביו של המשתמש
       else if (path == "updatebio")
       {
         var (userId, newBio) = request.GetBody<(string, string)>();
@@ -82,6 +86,7 @@ class Program
           response.Send("User not found");
         }
       }
+      // התחברות משתמש (לבדיקת שם משתמש וסיסמה)
       else if (path == "login")
       {
         var (username, password) = request.GetBody<(string, string)>();
@@ -104,6 +109,7 @@ class Program
           response.Send("Invalid credentials");
         }
       }
+      // מביא פוסטים של משתמש מסוים
       else if (path == "getuserposts")
       {
         var userId = request.GetBody<string>();
@@ -121,6 +127,7 @@ class Program
 
         response.Send(posts);
       }
+      // יצירת פוסט חדש
       else if (path == "createpost")
       {
         var (userId, title, content) = request.GetBody<(string, string, string)>();
@@ -137,6 +144,7 @@ class Program
 
         response.Send("Post created");
       }
+      // מביא את כל הפוסטים
       else if (path == "getposts")
       {
         var posts = database.Posts
@@ -153,6 +161,7 @@ class Program
 
         response.Send(posts);
       }
+      // לייק על פוסט (אם עוד לא עשית)
       else if (path == "likepost")
       {
         var (postId, userId) = request.GetBody<(int, string)>();
@@ -169,12 +178,14 @@ class Program
           response.Send("Already liked");
         }
       }
+      // מביא כמה לייקים יש לפוסט
       else if (path == "getlikes")
       {
         var postId = request.GetBody<int>();
         var likeCount = database.Likes.Count(l => l.PostId == postId);
         response.Send(likeCount);
       }
+      // מוסיף תגובה לפוסט
       else if (path == "addcomment")
       {
         var (postId, userId, content) = request.GetBody<(int, string, string)>();
@@ -188,6 +199,7 @@ class Program
         database.SaveChanges();
         response.Send("Comment added");
       }
+      // מביא את כל התגובות של פוסט
       else if (path == "getcomments")
       {
         var postId = request.GetBody<int>();
@@ -204,26 +216,28 @@ class Program
 
         response.Send(comments);
       }
- else if (path == "searchusers")
-{
-  var searchTerm = request.GetBody<string>().ToLower();
-  var users = database.Users
-    .Where(u => u.Username.ToLower().Contains(searchTerm))
-    .Select(u => new {
-      u.Id,
-      u.Username,
-      u.AvatarUrl
-    }).ToList();
+      // חיפוש משתמשים לפי שם
+      else if (path == "searchusers")
+      {
+        var searchTerm = request.GetBody<string>().ToLower();
+        var users = database.Users
+          .Where(u => u.Username.ToLower().Contains(searchTerm))
+          .Select(u => new {
+            u.Id,
+            u.Username,
+            u.AvatarUrl
+          }).ToList();
 
-  response.Send(users);
-}
-
+        response.Send(users);
+      }
+      // אם המשתמש ביקש HTML ולא מצאנו - מחזירים 404
       else if (request.ExpectsHtml())
       {
         var file = new File("website/pages/404.html");
         response.SetStatusCode(404);
         response.Send(file);
       }
+      // אחרת - בקשה לא חוקית
       else
       {
         response.SetStatusCode(400);
@@ -235,6 +249,7 @@ class Program
   }
 }
 
+// מחלקת קישור למסד הנתונים
 public class Database : DbContext
 {
   public DbSet<User> Users { get; set; } = default!;
@@ -244,10 +259,11 @@ public class Database : DbContext
 
   protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
   {
-    optionsBuilder.UseSqlite("Data Source=database.db");
+    optionsBuilder.UseSqlite("Data Source=database.db"); // משתמשים במסד SQLite מקומי
   }
 }
 
+// מבנה טבלה של משתמש
 public class User
 {
   [Key]
@@ -271,6 +287,7 @@ public class User
   }
 }
 
+// מבנה טבלה של פוסט
 public class Post
 {
   [Key] public int Id { get; set; }
@@ -287,6 +304,7 @@ public class Post
   }
 }
 
+// מבנה טבלה של תגובה
 public class Comment
 {
   [Key] public int Id { get; set; }
@@ -304,6 +322,7 @@ public class Comment
   }
 }
 
+// מבנה טבלה של לייקים
 public class Like
 {
   [Key] public int Id { get; set; }
