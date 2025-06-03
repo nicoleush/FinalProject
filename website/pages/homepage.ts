@@ -28,7 +28,6 @@ window.addEventListener("DOMContentLoaded", () => {
 
 // לוקח אלמנטים מה-HTML לפי ה-id שלהם
 const searchInput = document.getElementById("searchInput") as HTMLInputElement;
-const searchButton = document.getElementById("searchButton") as HTMLButtonElement;
 const searchUl = document.getElementById("searchUl") as HTMLUListElement;
 
 // פונקציה שמחפשת משתמשים ומציגה תוצאות
@@ -71,41 +70,3 @@ searchInput.addEventListener("input", async () => {
   await performSearch(query);
 });
 
-// בלחיצה על כפתור החיפוש
-searchButton.addEventListener("click", async () => {
-  const query = searchInput.value.trim();
-  if (!query) return;
-
-  const results = await send("searchUsers", query) as { Id: string; Username: string }[];
-  searchUl.innerHTML = ""; // מוחק את התוצאות הקודמות
-
-  // אם אין תוצאות – כותב הודעה
-  if (results.length === 0) {
-    const li = document.createElement("li");
-    li.textContent = "No users found.";
-    li.style.padding = "8px";
-    searchUl.appendChild(li);
-    return;
-  }
-
-  // אם יש רק תוצאה אחת – מיד עובר לפרופיל
-  if (results.length === 1) {
-    window.location.href = `profile.html?userId=${results[0].Id}`;
-    return;
-  }
-
-  // אם יש כמה תוצאות – מציג אותן לבחירה
-  results.forEach((user) => {
-    const li = document.createElement("li");
-    li.textContent = user.Username;
-    li.style.cursor = "pointer";
-    li.style.padding = "8px";
-    li.style.borderBottom = "1px solid #ccc";
-
-    li.addEventListener("click", () => {
-      window.location.href = `profile.html?userId=${user.Id}`;
-    });
-
-    searchUl.appendChild(li);
-  });
-});
