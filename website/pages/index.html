@@ -1,90 +1,100 @@
-<!DOCTYPE html>
+<!DOCTYPE html> <!-- מגדיר שהמסמך הוא HTML5 -->
 <html>
 
 <head>
   <style>
     body {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      background-color: rgb(230, 217, 201);
+      display: flex; /* מסדר את התוכן בטור בצורה גמישה */
+      flex-direction: column; /* מסדר את האלמנטים אחד מתחת לשני */
+      align-items: center; /* ממרכז את התוכן לרוחב */
+      background-color: rgb(230, 217, 201); /* רקע בצבע קרמי */
     }
 
     @keyframes slideIn {
       from {
-        transform: translateY(-50px);
-        opacity: 0;
+        transform: translateY(-50px); /* מתחיל קצת למעלה */
+        opacity: 0; /* שקיפות מלאה */
       }
       to {
-        transform: translateY(0);
-        opacity: 1;
+        transform: translateY(0); /* מסתיים במיקום הרגיל */
+        opacity: 1; /* מוצג מלא */
       }
     }
 
     h2 {
-      animation: slideIn 1s ease-out;
+      animation: slideIn 1s ease-out; /* אנימציה לכותרת המשנית */
     }
 
     .avatar-container {
-      display: flex;
-      gap: 15px;
-      margin-top: 10px;
+      display: flex; /* מציג את האווטרים בשורה */
+      gap: 15px; /* רווח בין כל אווטאר */
+      margin-top: 10px; /* ריווח מהכותרת */
     }
 
     .avatar {
       width: 80px;
       height: 80px;
-      border-radius: 50%;
-      cursor: pointer;
-      border: 3px solid transparent;
-      transition: 0.3s;
+      border-radius: 50%; /* מעגלי */
+      cursor: pointer; /* מצביע עכבר משתנה */
+      border: 3px solid transparent; /* גבול שקוף – כדי שיופיע שינוי כשנבחר */
+      transition: 0.3s; /* מעבר חלק */
     }
 
     .avatar:hover {
-      border-color: black;
+      border-color: black; /* מסגרת שחורה כשעוברים עם העכבר */
     }
 
     .selected {
-      border-color: red;
+      border-color: red; /* מסגרת אדומה כשנבחר */
     }
-
   </style>
-  <title>Let's get started!</title>
+
+  <title>Let's get started!</title> <!-- כותרת הדף בלשונית -->
 </head>
 
 <body>
-    <h1>Let's get started!</h1>
-    <h2>Personalize your profile</h2>
+  <h1>Let's get started!</h1> <!-- כותרת ראשית -->
+  <h2>Personalize your profile</h2> <!-- כותרת משנית עם אנימציה -->
 
-    <div class="avatar-container">
-      <img src="https://api.dicebear.com/7.x/bottts/svg?seed=1" class="avatar">
-      <img src="https://api.dicebear.com/7.x/bottts/svg?seed=2" class="avatar">
-      <img src="https://api.dicebear.com/7.x/bottts/svg?seed=3" class="avatar">
-      <img src="https://api.dicebear.com/7.x/bottts/svg?seed=4" class="avatar">
-      <img src="https://api.dicebear.com/7.x/bottts/svg?seed=5" class="avatar">
-      <img src="https://api.dicebear.com/7.x/bottts/svg?seed=6" class="avatar">
-    </div>
+  <!-- גלריית אווטרים לבחירה -->
+  <div class="avatar-container">
+    <!-- כל אווטאר הוא תמונה מ־Dicebear עם seed שונה -->
+    <img src="https://api.dicebear.com/7.x/bottts/svg?seed=1" class="avatar">
+    <img src="https://api.dicebear.com/7.x/bottts/svg?seed=2" class="avatar">
+    <img src="https://api.dicebear.com/7.x/bottts/svg?seed=3" class="avatar">
+    <img src="https://api.dicebear.com/7.x/bottts/svg?seed=4" class="avatar">
+    <img src="https://api.dicebear.com/7.x/bottts/svg?seed=5" class="avatar">
+    <img src="https://api.dicebear.com/7.x/bottts/svg?seed=6" class="avatar">
+  </div>
 
-    <div style="display: flex; flex-direction: column; align-items: center; gap: 10px; margin-top: 20px;">
-        <input type="text" placeholder="Username" required style="padding: 10px; width: 200px;" id="username">
-        <input type="email" placeholder="Email" required style="padding: 10px; width: 200px;" id="email">
-        <input type="password" placeholder="Password" required style="padding: 10px; width: 200px;" id="password">
-        <input type="hidden" id="selectedAvatar" name="avatar" id="avatar">
-        <button type="submit" style="background-color: black; color: white; padding: 10px 20px; border: none; cursor: pointer;" id="signUp">
-          Sign Up
-        </button>
-        <p>Already have an account? <a href="login.html">Log In</a></p>
+  <!-- טופס הרשמה -->
+  <div style="display: flex; flex-direction: column; align-items: center; gap: 10px; margin-top: 20px;">
+    <!-- שדה שם משתמש -->
+    <input type="text" placeholder="Username" required style="padding: 10px; width: 200px;" id="username">
 
-      </div>
-    <script src="signup.js" type="module"></script>
+    <!-- שדה אימייל -->
+    <input type="email" placeholder="Email" required style="padding: 10px; width: 200px;" id="email">
+
+    <!-- שדה סיסמה -->
+    <input type="password" placeholder="Password" required style="padding: 10px; width: 200px;" id="password">
+
+    <!-- שדה מוסתר ששומר את האווטאר שנבחר -->
     <input type="hidden" id="selectedAvatar" name="avatar">
-    <!-- signup.html -->
-<div id="message" style="color: red; margin-top: 10px;"></div>
 
-   
-    
+    <!-- כפתור הרשמה -->
+    <button type="submit" style="background-color: black; color: white; padding: 10px 20px; border: none; cursor: pointer;" id="signUp">
+      Sign Up
+    </button>
 
+    <!-- קישור להתחברות עבור משתמשים קיימים -->
+    <p>Already have an account? <a href="login.html">Log In</a></p>
+  </div>
 
+  <!-- קובץ ג'אווהסקריפט עם הלוגיקה של ההרשמה -->
+  <script src="signup.js" type="module"></script>
+
+  <!-- תיבת הודעה לשגיאות בהרשמה -->
+  <div id="message" style="color: red; margin-top: 10px;"></div>
 </body>
 
 </html>

@@ -1,34 +1,35 @@
-<!DOCTYPE html>
-<html lang="en">
+<!DOCTYPE html> <!-- מציין שמדובר במסמך HTML5 -->
+<html lang="en"> <!-- השפה של הדף – אנגלית -->
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>PostUp - Homepage</title>
+  <meta charset="UTF-8"> <!-- קידוד תווים UTF-8 שתומך בעברית ואנגלית -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- מאפשר התאמה לטלפונים ניידים -->
+  <title>PostUp - Homepage</title> <!-- כותרת שמופיעה בלשונית הדפדפן -->
+
   <style>
+    /* משתנים גלובליים לצבעים (למצב רגיל) */
     :root {
-      --bg-color: #ffffff;
-      --text-color: #000000;
-      --primary-color: #3B82F6;
-      --button-bg: #8B5CF6;
-      --button-hover-bg: #6D46C1;
-      --card-bg: #ffffff;
+      --bg-color: #ffffff; /* רקע לבן */
+      --text-color: #000000; /* טקסט שחור */
+      --primary-color: #3B82F6; /* צבע ראשי (כחול) */
+      --button-bg: #8B5CF6; /* רקע לכפתור */
+      --button-hover-bg: #6D46C1; /* רקע כשעוברים עם העכבר על כפתור */
+      --card-bg: #ffffff; /* רקע כרטיס */
     }
 
     body {
-      background-color: var(--bg-color);
-      color: var(--text-color);
-      transition: background-color 0.3s ease, color 0.3s ease;
-      font-family: 'Inter', sans-serif;
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
+      background-color: var(--bg-color); /* צבע רקע של כל הדף */
+      color: var(--text-color); /* צבע טקסט כללי */
+      transition: background-color 0.3s ease, color 0.3s ease; /* אנימציה בשינוי צבעים */
+      font-family: 'Inter', sans-serif; /* גופן */
+      margin: 0; /* בלי שוליים */
+      padding: 0; /* בלי ריווחים */
+      box-sizing: border-box; /* מוודא שהרוחב כולל את הריווחים */
     }
 
     h1 {
-      margin-top: 50px;
-      font-size: 2.5em;
-      text-align: center;
-      font-family: 'Inter', sans-serif;
+      margin-top: 50px; /* רווח מלמעלה */
+      font-size: 2.5em; /* גודל טקסט */
+      text-align: center; /* כותרת באמצע */
     }
 
     p {
@@ -37,11 +38,12 @@
     }
 
     .container {
-      max-width: 800px;
-      margin: 20px auto;
+      max-width: 800px; /* רוחב מקסימלי */
+      margin: 20px auto; /* ריווח ואמצע */
       padding: 20px;
     }
 
+    /* מצב כהה – עובר דרך כפתור מצב תצוגה */
     .dark {
       --bg-color: #1E1E1E;
       --text-color: #ffffff;
@@ -63,18 +65,18 @@
     }
 
     button:hover {
-      background-color: var(--button-hover-bg);
+      background-color: var(--button-hover-bg); /* כשעוברים עם העכבר על כפתור */
     }
 
     .bottom-nav {
       display: flex;
-      justify-content: space-around;
+      justify-content: space-around; /* מרווחים בין כפתורי ניווט */
       position: fixed;
       bottom: 0;
       width: 100%;
       background-color: var(--bg-color);
       padding: 10px 0;
-      box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1);
+      box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1); /* צל למעלה */
     }
 
     .bottom-nav button {
@@ -108,6 +110,7 @@
       margin-top: 0;
     }
 
+    /* עיצוב של תיבות קוד */
     .code-box {
       background-color: var(--card-bg);
       color: var(--text-color);
@@ -116,168 +119,167 @@
       box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
       white-space: pre-wrap;
       font-family: 'Fira Code', monospace;
-       font-size: 0.95em;
+      font-size: 0.95em;
     }
 
     pre {
       margin: 0;
       overflow-x: auto;
     }
+
+    /* לוגו עגול עם גבול וצל */
     .logo-img {
-  display: block;
-  margin: 30px auto 0;
-  width: 120px;
-  height: 120px;
-  object-fit: cover;
-  border-radius: 50%; /* makes it circular */
-  border: 3px solid var(--primary-color); /* adds a nice colored border */
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* optional shadow */
-}
-.layout-wrapper {
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: flex-start;
-  gap: 40px;
-  flex-wrap: wrap; /* responsive on smaller screens */
-  padding: 20px;
-}
+      display: block;
+      margin: 30px auto 0;
+      width: 120px;
+      height: 120px;
+      object-fit: cover;
+      border-radius: 50%;
+      border: 3px solid var(--primary-color);
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    }
 
-.instructions-box {
-  flex: 1 1 250px;
-  max-width: 250px;
-  background-color: var(--card-bg);
-  color: var(--text-color);
-  border-radius: 12px;
-  padding: 20px;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-  font-size: 0.95em;
-}
+    /* פריסת עמוד: צד שמאל תיבת הסברים, צד ימין תוכן */
+    .layout-wrapper {
+      display: flex;
+      flex-direction: row;
+      justify-content: center;
+      align-items: flex-start;
+      gap: 40px;
+      flex-wrap: wrap;
+      padding: 20px;
+    }
 
-.instructions-box ul {
-  padding-left: 20px;
-}
+    .instructions-box {
+      flex: 1 1 250px;
+      max-width: 250px;
+      background-color: var(--card-bg);
+      color: var(--text-color);
+      border-radius: 12px;
+      padding: 20px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+      font-size: 0.95em;
+    }
 
-.instructions-box li {
-  margin-bottom: 10px;
-}
-#themeToggle {
-  display: block;
-  margin: 10px auto;
-  padding: 8px 18px;
-  font-size: 0.95em;
-}
+    .instructions-box ul {
+      padding-left: 20px;
+    }
 
-  .search-wrapper {
-    position: relative;
-    width: 220px;
-    margin: 30px auto 0;
-  }
+    .instructions-box li {
+      margin-bottom: 10px;
+    }
 
-  #searchInput {
-    padding: 10px;
-    width: 100%;
-    border-radius: 8px;
-    border: 1px solid #ccc;
-    box-sizing: border-box;
-  }
+    #themeToggle {
+      display: block;
+      margin: 10px auto;
+      padding: 8px 18px;
+      font-size: 0.95em;
+    }
 
-  #searchUl {
-    position: absolute;
-    top: 100%;
-    left: 0;
-    width: 100%;
-    list-style: none;
-    margin: 5px 0 0;
-    padding: 0;
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    background-color: white;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-    max-height: 200px;
-    overflow-y: auto;
-    z-index: 10;
-    color: black;
-  }
+    /* חיפוש משתמשים */
+    .search-wrapper {
+      position: relative;
+      width: 220px;
+      margin: 30px auto 0;
+    }
 
-  #searchUl li {
-    padding: 10px;
-    cursor: pointer;
-    transition: background-color 0.2s ease;
-  }
+    #searchInput {
+      padding: 10px;
+      width: 100%;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      box-sizing: border-box;
+    }
 
-  #searchUl li:hover {
-    background-color: #f0f0f0;
-  }
+    #searchUl {
+      position: absolute;
+      top: 100%;
+      left: 0;
+      width: 100%;
+      list-style: none;
+      margin: 5px 0 0;
+      padding: 0;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      background-color: white;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+      max-height: 200px;
+      overflow-y: auto;
+      z-index: 10;
+      color: black;
+    }
 
-  /* 🌙 מצב כהה */
-  .dark #searchUl {
-    background-color: #2a2a2a;
-    color: white;
-    border: 1px solid #444;
-  }
+    #searchUl li {
+      padding: 10px;
+      cursor: pointer;
+      transition: background-color 0.2s ease;
+    }
 
-  .dark #searchUl li:hover {
-    background-color: #3a3a3a;
-  }
-</style>
+    #searchUl li:hover {
+      background-color: #f0f0f0;
+    }
 
+    .dark #searchUl {
+      background-color: #2a2a2a;
+      color: white;
+      border: 1px solid #444;
+    }
+
+    .dark #searchUl li:hover {
+      background-color: #3a3a3a;
+    }
   </style>
+
+  <!-- ייבוא פונטים מגוגל -->
   <link href="https://fonts.googleapis.com/css2?family=Fira+Code&family=Inter&display=swap" rel="stylesheet">
-
 </head>
+
 <body>
-    <div class="layout-wrapper">
-        <!-- Sidebar Instructions -->
-        <aside class="instructions-box">
-          <h2>📘 How to Use PostUp</h2>
-          <ul>
-            <li>📝 Create posts in the <strong>Feed</strong> tab</li>
-            <li>💬 Comment and like other posts</li>
-            <li>👤 View your profile in <strong>My Profile</strong></li>
-            <li>🌗 Toggle between light and dark mode</li>
-            <li>👥 explore our amazing community! <strong>search</strong> for friends</li>
-          </ul>
-        </aside>
-        
-       <div class="search-wrapper">
-  <input type="text" id="searchInput" placeholder="Search users...">
-  
-  <ul id="searchUl"></ul>
-</div>
+  <div class="layout-wrapper">
+    <!-- תיבת הסבר בצד -->
+    <aside class="instructions-box">
+      <h2>📘 איך להשתמש ב־PostUp</h2>
+      <ul>
+        <li>📝 צרו פוסטים בלשונית <strong>Feed</strong></li>
+        <li>💬 הגיבו ועשו לייק לפוסטים</li>
+        <li>👤 ראו את הפרופיל שלכם בלשונית <strong>My Profile</strong></li>
+        <li>🌗 החליפו מצב אור/כהה</li>
+        <li>👥 חפשו משתמשים בקהילה שלנו</li>
+      </ul>
+    </aside>
 
+    <!-- שדה חיפוש -->
+    <div class="search-wrapper">
+      <input type="text" id="searchInput" placeholder="Search users...">
+      <ul id="searchUl"></ul>
+    </div>
 
-      
-        <!-- Main Content -->
-        <div class="container">
-          <img src="logo-postup.png" alt="PostUp Logo" class="logo-img">
-          <h1>Welcome to PostUp!</h1>
-          <p>Every programmer's home.</p>
-          <button id="themeToggle">Toggle Theme</button>
-      
-          <!-- Tip of the Day -->
-          <div style="margin-top: 30px; text-align: center;">
-            <h2>💡 Tip of the Day</h2>
-            <p id="dailyTip" style="font-style: italic;"></p>
-          </div>
-      
-          <!-- Programming Language Basics -->
-          <!-- (Keep your code boxes here like before) -->
-      
-          <!-- Recent Posts -->
-          
-          <div id="feed"></div>
-        </div>
+    <!-- אזור מרכזי: תוכן האתר -->
+    <div class="container">
+      <img src="logo-postup.png" alt="PostUp Logo" class="logo-img">
+      <h1>Welcome to PostUp!</h1>
+      <p>Every programmer's home.</p>
+      <button id="themeToggle">Toggle Theme</button>
+
+      <!-- טיפ יומי -->
+      <div style="margin-top: 30px; text-align: center;">
+        <h2>💡 טיפ יומי</h2>
+        <p id="dailyTip" style="font-style: italic;"></p>
       </div>
-      
-    <!-- Programming Language Basics -->
-    <div style="margin-top: 50px;">
-      <h2 style="text-align:center;">🛠️ Programming Language Basics</h2>
 
-      <div style="display: flex; flex-direction: column; gap: 20px;">
-        <div class="code-box">
-          <h3>🐍 Python</h3>
-          <pre><code># Print text
+      <!-- פיד פוסטים (נטען דרך JS) -->
+      <div id="feed"></div>
+    </div>
+  </div>
+
+  <!-- קטעים של קוד בשפות תכנות -->
+  <div style="margin-top: 50px;">
+    <h2 style="text-align:center;">🛠️ יסודות בשפות תכנות</h2>
+
+    <div style="display: flex; flex-direction: column; gap: 20px;">
+      <div class="code-box">
+        <h3>🐍 Python</h3>
+        <pre><code># Print text
 print("Hello, world!")
 
 # If statement
@@ -287,11 +289,11 @@ if x > 5:
 # Function
 def greet(name):
     return "Hi " + name</code></pre>
-        </div>
+      </div>
 
-        <div class="code-box">
-          <h3>🟨 JavaScript</h3>
-          <pre><code>// Print to console
+      <div class="code-box">
+        <h3>🟨 JavaScript</h3>
+        <pre><code>// Print to console
 console.log("Hello");
 
 // If statement
@@ -303,11 +305,11 @@ if (x > 5) {
 function greet(name) {
   return "Hi " + name;
 }</code></pre>
-        </div>
+      </div>
 
-        <div class="code-box">
-          <h3>🔵 C#</h3>
-          <pre><code>// Print
+      <div class="code-box">
+        <h3>🔵 C#</h3>
+        <pre><code>// Print
 Console.WriteLine("Hello");
 
 // If statement
@@ -321,24 +323,18 @@ string Greet(string name)
 {
   return "Hi " + name;
 }</code></pre>
-        </div>
       </div>
     </div>
-
-    <!-- Recent Posts Header (optional placeholder) -->
-   
-    <div id="feed"></div>
   </div>
 
-  <!-- Bottom Navigation -->
+  <!-- ניווט תחתון בין עמודים -->
   <div class="bottom-nav">
     <button onclick="window.location.href='homepage.html'">Home</button>
     <button onclick="window.location.href='profile.html'">My Profile</button>
     <button id="createPostBtn" onclick="window.location.href='createPost.html'">Feed</button>
   </div>
 
-
+  <!-- קובץ ג'אווהסקריפט שמנהל את הדף -->
   <script src="homepage.js" type="module"></script>
-
 </body>
 </html>

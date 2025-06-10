@@ -4,20 +4,23 @@
   <meta charset="UTF-8">
   <title>404 - Glitch Screen</title>
   <link rel="icon" href="favicon.png">
+  
   <style>
+    /* עיצוב כללי של הגוף */
     body {
       margin: 0;
       padding: 0;
-      background: #0f0f0f;
-      color: #33ff33;
-      font-family: 'Courier New', monospace;
+      background: #0f0f0f; /* רקע שחור */
+      color: #33ff33; /* טקסט ירוק כמו מסך טרמינל ישן */
+      font-family: 'Courier New', monospace; /* גופן בסגנון מחשב */
       display: flex;
       justify-content: center;
       align-items: center;
       height: 100vh;
-      overflow: hidden;
+      overflow: hidden; /* לא נותן לגלול */
     }
 
+    /* אפקט הריצוד (glitch) */
     .glitch {
       position: absolute;
       width: 100%;
@@ -34,12 +37,14 @@
       z-index: 10;
     }
 
+    /* אנימציה של תזוזה וריצוד */
     @keyframes flicker {
       0% { transform: translateY(0); opacity: 1; }
       50% { transform: translateY(2px); opacity: 0.8; }
       100% { transform: translateY(-1px); opacity: 1; }
     }
 
+    /* קופסת הטרמינל שמופיעה אחרי אפקט הריצוד */
     .terminal {
       background-color: #1a1a1a;
       padding: 30px;
@@ -48,21 +53,23 @@
       max-width: 800px;
       width: 90%;
       text-align: left;
-      opacity: 0;
-      transform: scale(1.02);
+      opacity: 0; /* מוסתר בהתחלה */
+      transform: scale(1.02); /* מוגדל מעט בהתחלה */
       transition: opacity 0.8s ease, transform 0.5s ease;
       z-index: 1;
     }
 
     .terminal.visible {
-      opacity: 1;
-      transform: scale(1);
+      opacity: 1; /* מופיע בהדרגה */
+      transform: scale(1); /* חזרה לגודל רגיל */
     }
 
+    /* עיצוב שורות */
     .line {
       line-height: 1.6;
     }
 
+    /* צבעים מיוחדים לטקסט */
     .error {
       color: red;
     }
@@ -71,6 +78,7 @@
       color: #999;
     }
 
+    /* עיצוב כפתור הקישור הביתה */
     a {
       display: inline-block;
       margin-top: 30px;
@@ -88,10 +96,13 @@
     }
   </style>
 </head>
+
 <body>
 
+  <!-- שכבת הריצוד -->
   <div class="glitch" id="glitchEffect"></div>
 
+  <!-- תיבת ההודעה שמופיעה אחרי האפקט -->
   <div class="terminal" id="terminal">
     <div class="line comment">// 404 Error - Page Not Found</div>
     <div class="line">> Attempting to compile requested page...</div>
@@ -100,17 +111,20 @@
     <div class="line">> Fallback not found.</div>
     <div class="line">> Suggestion: Check your URL or go back to the homepage.</div>
 
+    <!-- קישור חזרה לדף הבית -->
     <a href="/website/pages/homepage.html">Return to Homepage</a>
   </div>
 
+  <!-- סקריפט שמטפל בהסתרה של האפקט והצגת הטרמינל -->
   <script>
     const glitch = document.getElementById("glitchEffect");
     const terminal = document.getElementById("terminal");
 
     setTimeout(() => {
-      glitch.remove(); // Clean removal of glitch effect
-      terminal.classList.add("visible");
-    }, 2000); // 2 seconds of glitch before reveal
+      glitch.remove(); // מסיר את אפקט הריצוד
+      terminal.classList.add("visible"); // מציג את הטרמינל עם ההודעה
+    }, 2000); // אחרי 2 שניות
   </script>
+
 </body>
 </html>

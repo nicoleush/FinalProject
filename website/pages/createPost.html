@@ -5,7 +5,10 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>PostUp - Create Post</title>
+  <link rel="icon" href="favicon.png">
+
   <style>
+    /* משתנים גלובליים לצבעים */
     :root {
       --bg-color: #f9f9f9;
       --text-color: #333333;
@@ -15,6 +18,7 @@
       --card-bg: #ffffff;
     }
 
+    /* עיצוב בסיסי של הדף */
     body {
       background-color: var(--bg-color);
       color: var(--text-color);
@@ -23,6 +27,7 @@
       padding: 0;
     }
 
+    /* קופסת התוכן הראשית */
     .container {
       max-width: 800px;
       margin: 40px auto;
@@ -32,11 +37,11 @@
       box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
     }
 
-    h1,
-    h2 {
+    h1, h2 {
       text-align: center;
     }
 
+    /* עיצוב שדות קלט וטקסט */
     input[type="text"],
     textarea {
       width: 100%;
@@ -48,6 +53,7 @@
       box-sizing: border-box;
     }
 
+    /* כפתורים */
     button {
       background-color: var(--primary-color);
       color: #fff;
@@ -65,20 +71,20 @@
       background-color: var(--button-hover-bg);
     }
 
+    /* עיצוב אזור הפוסטים */
     .posts-section {
       margin-top: 50px;
     }
 
     .post {
-  background-color: var(--card-bg);
-  color: var(--text-color);
-  margin: 15px 0;
-  padding: 20px;
-  border-radius: 10px;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
-  transition: background-color 0.3s, color 0.3s;
-}
-
+      background-color: var(--card-bg);
+      color: var(--text-color);
+      margin: 15px 0;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+      transition: background-color 0.3s, color 0.3s;
+    }
 
     .post h3 {
       margin-top: 0;
@@ -102,6 +108,8 @@
       background-color: #e0e0e0;
       margin: 40px 0;
     }
+
+    /* ניווט תחתון קבוע */
     .bottom-nav {
       display: flex;
       justify-content: space-around;
@@ -123,6 +131,7 @@
       cursor: pointer;
     }
 
+    /* מצב כהה */
     .dark .bottom-nav button {
       background-color: var(--button-bg);
     }
@@ -130,25 +139,27 @@
     .dark .bottom-nav button:hover {
       background-color: var(--button-hover-bg);
     }
+
     .dark {
-  --bg-color: #1E1E1E;
-  --text-color: #ffffff;
-  --primary-color: #8B5CF6;
-  --button-bg: #6D46C1;
-  --button-hover-bg: #5A3D99;
-  --card-bg: #2C2C2C; /* ✅ Add this line */
-}
-
-
+      --bg-color: #1E1E1E;
+      --text-color: #ffffff;
+      --primary-color: #8B5CF6;
+      --button-bg: #6D46C1;
+      --button-hover-bg: #5A3D99;
+      --card-bg: #2C2C2C;
+    }
   </style>
 </head>
 
 <body>
-    <button id="themeToggle">Toggle Theme</button>
+  <!-- כפתור שמחליף בין מצב לילה/יום -->
+  <button id="themeToggle">Toggle Theme</button>
+
+  <!-- קופסת התוכן -->
   <div class="container">
     <h1>Create Your Post</h1>
 
-    <!-- Create Post Form -->
+    <!-- טופס יצירת פוסט -->
     <div id="postForm">
       <input type="text" id="postTitle" placeholder="Post Title" required>
       <textarea id="postContent" placeholder="Write your post..." rows="5" required></textarea>
@@ -157,32 +168,26 @@
 
     <div class="divider"></div>
 
-    <!-- Posts Section (only once) -->
+    <!-- אזור הצגת הפוסטים -->
     <div class="posts-section">
       <h2>Recent Posts</h2>
-      <div id="feed"></div>
+      <div id="feed"></div> <!-- הפוסטים ייכנסו לכאן בג'אווהסקריפט -->
     </div>
   </div>
-  <br>
-  <br>
-  <br>
-  <br>
-  <br>
 
+  <!-- רווח כדי שהניווט התחתון לא יכסה את התוכן -->
+  <br><br><br><br><br>
 
-   <!-- Bottom Navigation -->
-<div class="bottom-nav">
-  <button onclick="window.location.href='homepage.html'">Home</button>
-  <button onclick="window.location.href='profile.html'">My Profile</button>
-  <button id="createPostBtn" onclick="window.location.href='createPost.html'">Feed</button>
-</div>
+  <!-- סרגל תחתון עם כפתורי ניווט -->
+  <div class="bottom-nav">
+    <button onclick="window.location.href='homepage.html'">Home</button>
+    <button onclick="window.location.href='profile.html'">My Profile</button>
+    <button id="createPostBtn" onclick="window.location.href='createPost.html'">Feed</button>
+  </div>
 
-
+  <!-- קישורים לקבצי סקריפט -->
   <script src="createPost.js" type="module"></script>
   <script src="toggleTheme.js" type="module"></script>
-
-  
-
 
 </body>
 

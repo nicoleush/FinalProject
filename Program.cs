@@ -6,32 +6,32 @@ class Program
   static void Main()
   {
     int port = 5000;
-    var server = new Server(port);
+    var server = new Server(port); // יוצרים שרת שמאזין לפורט 5000
 
     Console.WriteLine("The server is running");
     Console.WriteLine($"Main Page: http://localhost:{port}/website/pages/index.html");
 
-    var database = new Database();
-    database.Database.EnsureCreated(); // אם אין עדיין מסד נתונים - תיצור אותו
+    var database = new Database(); // מחבר למסד הנתונים
+    database.Database.EnsureCreated(); // אם מסד הנתונים לא קיים - נוצר אותו
 
-    while (true)
+    while (true) // לולאה שמאזינה לבקשות מהדפדפן
     {
-      (var request, var response) = server.WaitForRequest(); // מחכה לבקשה מהדפדפן
+      (var request, var response) = server.WaitForRequest(); // ממתין לבקשה מהלקוח
       Console.WriteLine($"Received a request with the path: {request.Path}");
 
-      string path = request.Path.ToLower().TrimStart('/');
+      string path = request.Path.ToLower().TrimStart('/'); // מוריד '/' מההתחלה
 
-      // שליחת קבצים סטטיים (כמו HTML/CSS)
+      // אם הבקשה היא לקובץ סטטי (HTML, CSS, JS וכו') והוא באמת קיים
       if (File.Exists(request.Path))
       {
         var file = new File(request.Path);
         response.Send(file);
       }
-      // נתיב שמביא פרופיל לפי מזהה משתמש
+      // בקשה לפרופיל של משתמש מסוים
       else if (request.Path == "profile")
       {
-        var userId = request.GetBody<string>();
-        var user = database.Users.FirstOrDefault(u => u.Id == userId);
+        var userId = request.GetBody<string>(); // מקבל את המזהה של המשתמש מהגוף של הבקשה
+        var user = database.Users.FirstOrDefault(u => u.Id == userId); // מחפש את המשתמש במסד
 
         if (user != null)
         {
@@ -49,26 +49,27 @@ class Program
           response.Send("User not found");
         }
       }
-      // נתיב הרשמה של משתמש חדש
+      // הרשמת משתמש חדש
       else if (path == "signup")
       {
+        // מקבל את כל הנתונים מהלקוח
         var (username, password, theme, bio, avatarUrl) = request.GetBody<(string, string, string, string, string)>();
-        var userExists = database.Users.Any(user => user.Username == username);
+        var userExists = database.Users.Any(user => user.Username == username); // בדיקה אם השם תפוס
 
         if (!userExists)
         {
-          var userId = Guid.NewGuid().ToString();
+          var userId = Guid.NewGuid().ToString(); // יוצר מזהה ייחודי
           database.Users.Add(new User(userId, username, password, "", bio, avatarUrl, theme));
-          database.SaveChanges();
-          response.Send(userId);
+          database.SaveChanges(); // שומר את השינוי במסד
+          response.Send(userId); // מחזיר את המזהה ללקוח
         }
         else
         {
-          response.SetStatusCode(409);
+          response.SetStatusCode(409); // קוד 409 = קונפליקט (כמו משתמש קיים)
           response.Send("Username already exists");
         }
       }
-      // עדכון הביו של המשתמש
+      // עדכון הביוגרפיה של המשתמש
       else if (path == "updatebio")
       {
         var (userId, newBio) = request.GetBody<(string, string)>();
@@ -86,7 +87,7 @@ class Program
           response.Send("User not found");
         }
       }
-      // התחברות משתמש (לבדיקת שם משתמש וסיסמה)
+      // התחברות של משתמש קיים
       else if (path == "login")
       {
         var (username, password) = request.GetBody<(string, string)>();
@@ -105,32 +106,32 @@ class Program
         }
         else
         {
-          response.SetStatusCode(401);
+          response.SetStatusCode(401); // 401 = לא מורשה
           response.Send("Invalid credentials");
         }
       }
-      // מביא פוסטים של משתמש מסוים
+      // בקשה להביא את כל הפוסטים של משתמש מסוים
       else if (path == "getuserposts")
       {
         var userId = request.GetBody<string>();
         var posts = database.Posts
-          .Where(p => p.UserId == userId)
-          .OrderByDescending(p => p.CreatedAt)
+          .Where(p => p.UserId == userId) // מסנן לפי מזהה המשתמש
+          .OrderByDescending(p => p.CreatedAt) // מהחדש לישן
           .Select(p => new
           {
             p.Id,
             Title = p.Title,
             Content = p.Content,
-            CreatedAt = p.CreatedAt.ToString("o")
+            CreatedAt = p.CreatedAt.ToString("o") // פורמט זמן לפי ISO
           })
           .ToList();
 
-        response.Send(posts);
+        response.Send(posts); // שולח את רשימת הפוסטים
       }
-      // יצירת פוסט חדש
+      // יצירת פוסט חדש ע"י המשתמש
       else if (path == "createpost")
       {
-        var (userId, title, content) = request.GetBody<(string, string, string)>();
+        var (userId, title, content) = request.GetBody<(string, string, string)>(); // קבלת נתוני הפוסט
 
         var post = new Post
         {
@@ -139,12 +140,11 @@ class Program
           Content = content
         };
 
-        database.Posts.Add(post);
-        database.SaveChanges();
-
+        database.Posts.Add(post); // מוסיפים למסד
+        database.SaveChanges(); // שומרים
         response.Send("Post created");
       }
-      // מביא את כל הפוסטים
+      // בקשה לכל הפוסטים בפלטפורמה
       else if (path == "getposts")
       {
         var posts = database.Posts
@@ -155,17 +155,17 @@ class Program
             title = p.Title,
             content = p.Content,
             createdAt = p.CreatedAt,
-            username = database.Users.FirstOrDefault(u => u.Id == p.UserId)!.Username
+            username = database.Users.FirstOrDefault(u => u.Id == p.UserId)!.Username // שם המשתמש שפרסם
           })
           .ToList();
 
         response.Send(posts);
       }
-      // לייק על פוסט (אם עוד לא עשית)
+      // לייק לפוסט
       else if (path == "likepost")
       {
         var (postId, userId) = request.GetBody<(int, string)>();
-        var alreadyLiked = database.Likes.Any(l => l.PostId == postId && l.UserId == userId);
+        var alreadyLiked = database.Likes.Any(l => l.PostId == postId && l.UserId == userId); // בדיקה אם כבר עשה לייק
 
         if (!alreadyLiked)
         {
@@ -178,14 +178,14 @@ class Program
           response.Send("Already liked");
         }
       }
-      // מביא כמה לייקים יש לפוסט
+      // מספר הלייקים לפוסט
       else if (path == "getlikes")
       {
         var postId = request.GetBody<int>();
         var likeCount = database.Likes.Count(l => l.PostId == postId);
         response.Send(likeCount);
       }
-      // מוסיף תגובה לפוסט
+      // תגובה חדשה לפוסט
       else if (path == "addcomment")
       {
         var (postId, userId, content) = request.GetBody<(int, string, string)>();
@@ -199,7 +199,7 @@ class Program
         database.SaveChanges();
         response.Send("Comment added");
       }
-      // מביא את כל התגובות של פוסט
+      // קבלת כל התגובות של פוסט
       else if (path == "getcomments")
       {
         var postId = request.GetBody<int>();
@@ -230,26 +230,25 @@ class Program
 
         response.Send(users);
       }
-      // אם המשתמש ביקש HTML ולא מצאנו - מחזירים 404
+      // אם הבקשה היא לקובץ HTML שלא נמצא
       else if (request.ExpectsHtml())
       {
         var file = new File("website/pages/404.html");
         response.SetStatusCode(404);
         response.Send(file);
       }
-      // אחרת - בקשה לא חוקית
+      // כל מקרה אחר - בקשה לא חוקית
       else
       {
         response.SetStatusCode(400);
         response.Send($"Invalid request path: {request.Path}");
       }
 
-      response.Close();
+      response.Close(); // סוגרים את התשובה
     }
   }
 }
-
-// מחלקת קישור למסד הנתונים
+// מחלקה שמייצגת את מסד הנתונים
 public class Database : DbContext
 {
   public DbSet<User> Users { get; set; } = default!;
@@ -259,14 +258,15 @@ public class Database : DbContext
 
   protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
   {
-    optionsBuilder.UseSqlite("Data Source=database.db"); // משתמשים במסד SQLite מקומי
+    // מגדיר שימוש במסד נתונים מסוג SQLite ששמור בקובץ database.db
+    optionsBuilder.UseSqlite("Data Source=database.db");
   }
 }
 
-// מבנה טבלה של משתמש
+// ייצוג של טבלת משתמשים במסד
 public class User
 {
-  [Key]
+  [Key] // מפתח ראשי
   public string Id { get; set; }
   public string Username { get; set; }
   public string Password { get; set; }
@@ -275,6 +275,7 @@ public class User
   public string AvatarUrl { get; set; }
   public string Theme { get; set; }
 
+  // בנאי - משמש ליצירת משתמש חדש
   public User(string id, string username, string password, string email = "", string bio = "", string avatarUrl = "", string theme = "light")
   {
     Id = id;
@@ -287,15 +288,16 @@ public class User
   }
 }
 
-// מבנה טבלה של פוסט
+// ייצוג של טבלת פוסטים
 public class Post
 {
-  [Key] public int Id { get; set; }
-  public string UserId { get; set; }
-  public string Title { get; set; }
-  public string Content { get; set; }
-  public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
-  public Post() { }
+  [Key] public int Id { get; set; } // מזהה ייחודי
+  public string UserId { get; set; } // של מי הפוסט
+  public string Title { get; set; } // כותרת
+  public string Content { get; set; } // תוכן
+  public DateTime CreatedAt { get; set; } = DateTime.UtcNow; // זמן יצירה ברירת מחדל
+
+  public Post() { } // בנאי ריק נחוץ למסד
   public Post(string userId, string title, string content)
   {
     UserId = userId;
@@ -304,7 +306,7 @@ public class Post
   }
 }
 
-// מבנה טבלה של תגובה
+// ייצוג של טבלת תגובות
 public class Comment
 {
   [Key] public int Id { get; set; }
@@ -312,6 +314,7 @@ public class Comment
   public string UserId { get; set; }
   public string Content { get; set; }
   public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+
   public Comment() { }
 
   public Comment(int postId, string userId, string content)
@@ -322,12 +325,13 @@ public class Comment
   }
 }
 
-// מבנה טבלה של לייקים
+// ייצוג של טבלת לייקים
 public class Like
 {
   [Key] public int Id { get; set; }
   public int PostId { get; set; }
   public string UserId { get; set; }
+
   public Like() { }
 
   public Like(int postId, string userId)

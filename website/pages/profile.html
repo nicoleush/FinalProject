@@ -1,170 +1,172 @@
-<!DOCTYPE html>
-<html lang="en">
+<!DOCTYPE html> <!-- מציין שמדובר בקובץ HTML5 -->
+<html lang="en"> <!-- השפה היא אנגלית -->
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>User Profile</title>
-
-
+  <meta charset="UTF-8" /> <!-- קידוד תווים בינלאומי -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/> <!-- התאמה לניידים -->
+  <title>User Profile</title> <!-- כותרת בלשונית הדפדפן -->
 
   <style>
-        :root {
-            --bg-color: #ffffff;
-            --text-color: #000000;
-            --primary-color: #3B82F6;
-            --button-bg: #8B5CF6;
-            --button-hover-bg: #6D46C1;
-        }
-
-        body {
-            background-color: var(--bg-color);
-            color: var(--text-color);
-            transition: background-color 0.3s ease, color 0.3s ease;
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        h1 {
-            margin-top: 50px;
-            font-size: 2.5em;
-            text-align: center;
-        }
-
-        p {
-            font-size: 1.2em;
-            text-align: center;
-        }
-
-        .container {
-            max-width: 800px;
-            margin: 20px auto;
-            padding: 20px;
-        }
-
-        .dark {
-            --bg-color: #1E1E1E;
-            --text-color: #ffffff;
-            --primary-color: #8B5CF6;
-            --button-bg: #6D46C1;
-            --button-hover-bg: #5A3D99;
-        }
-
-        button {
-            background-color: var(--primary-color);
-            color: #fff;
-            padding: 10px 20px;
-            border: none;
-            cursor: pointer;
-            border-radius: 8px;
-            font-size: 1em;
-            transition: background-color 0.3s ease;
-        }
-
-        button:hover {
-            background-color: var(--button-hover-bg);
-        }
-
-
-
-        .dark .bottom-nav button {
-            background-color: var(--button-bg);
-        }
-
-        .dark .bottom-nav button:hover {
-            background-color: var(--button-hover-bg);
-        }
-        #avatar {
-  width: 150px;
-  height: 150px;
-  border-radius: 50%;
-  display: block;
-  margin: 20px auto;
-}
-#signOutBtn {
-  background-color: #e53e3e;
-}
-#signOutBtn:hover {
-  background-color: #c53030;
-}
-.bottom-nav {
-      display: flex;
-      justify-content: space-around;
-      position: fixed;
-      bottom: 0;
-      width: 100%;
-      background-color: var(--bg-color);
-      padding: 10px 0;
-      box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1);
+    /* משתנים לצבעים במצב רגיל */
+    :root {
+        --bg-color: #ffffff;
+        --text-color: #000000;
+        --primary-color: #3B82F6;
+        --button-bg: #8B5CF6;
+        --button-hover-bg: #6D46C1;
     }
 
-    .bottom-nav button {
-      background-color: var(--primary-color);
-      padding: 10px;
-      flex: 1;
-      border: none;
-      color: white;
-      font-size: 1em;
-      cursor: pointer;
+    body {
+        background-color: var(--bg-color);
+        color: var(--text-color);
+        transition: background-color 0.3s ease, color 0.3s ease;
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
     }
 
+    h1 {
+        margin-top: 50px;
+        font-size: 2.5em;
+        text-align: center;
+    }
+
+    p {
+        font-size: 1.2em;
+        text-align: center;
+    }
+
+    .container {
+        max-width: 800px;
+        margin: 20px auto;
+        padding: 20px;
+    }
+
+    /* מצב כהה: מחליף ערכים של משתנים */
+    .dark {
+        --bg-color: #1E1E1E;
+        --text-color: #ffffff;
+        --primary-color: #8B5CF6;
+        --button-bg: #6D46C1;
+        --button-hover-bg: #5A3D99;
+    }
+
+    button {
+        background-color: var(--primary-color);
+        color: #fff;
+        padding: 10px 20px;
+        border: none;
+        cursor: pointer;
+        border-radius: 8px;
+        font-size: 1em;
+        transition: background-color 0.3s ease;
+    }
+
+    button:hover {
+        background-color: var(--button-hover-bg);
+    }
+
+    /* כפתורים בניווט תחתון במצב כהה */
     .dark .bottom-nav button {
-      background-color: var(--button-bg);
+        background-color: var(--button-bg);
     }
 
     .dark .bottom-nav button:hover {
-      background-color: var(--button-hover-bg);
+        background-color: var(--button-hover-bg);
     }
 
+    /* עיצוב תמונת האווטאר */
+    #avatar {
+        width: 150px;
+        height: 150px;
+        border-radius: 50%; /* עגול */
+        display: block;
+        margin: 20px auto;
+    }
 
-    
+    /* עיצוב לכפתור יציאה */
+    #signOutBtn {
+        background-color: #e53e3e; /* אדום */
+    }
+    #signOutBtn:hover {
+        background-color: #c53030; /* כהה יותר */
+    }
 
+    /* ניווט תחתון */
+    .bottom-nav {
+        display: flex;
+        justify-content: space-around;
+        position: fixed;
+        bottom: 0;
+        width: 100%;
+        background-color: var(--bg-color);
+        padding: 10px 0;
+        box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1);
+    }
+
+    .bottom-nav button {
+        background-color: var(--primary-color);
+        padding: 10px;
+        flex: 1;
+        border: none;
+        color: white;
+        font-size: 1em;
+        cursor: pointer;
+    }
+
+    .dark .bottom-nav button {
+        background-color: var(--button-bg);
+    }
+
+    .dark .bottom-nav button:hover {
+        background-color: var(--button-hover-bg);
+    }
   </style>
 </head>
+
 <body>
+  <!-- עטיפת כל התוכן בדף -->
   <div class="profile-container">
     <h1>User Profile</h1>
+
+    <!-- הצגת שם משתמש וביוגרפיה -->
     <p>Username: <span id="username"></span></p>
     <p>Bio: <span id="bio"></span></p>
+
+    <!-- עריכת ביוגרפיה -->
     <div style="text-align: center; margin-top: 20px;">
         <textarea id="bioInput" placeholder="Write your bio here..." rows="4" style="width:80%; border-radius: 8px; padding: 10px; border: 1px solid #ccc;"></textarea>
         <br><br>
-        <button id="saveBioBtn">Save Bio</button>
-        
-      </div>
-      
+        <button id="saveBioBtn">Save Bio</button> <!-- שומר את הביוגרפיה החדשה -->
+    </div>
+
+    <!-- תמונת אווטאר -->
     <img id="avatar" src="../assets/imgs/default.jpg" alt="Avatar" />
+
+    <!-- אזור הפוסטים -->
     <h2 style="text-align: center; margin-top: 40px;">📝 My Posts</h2>
-    <div id="myPosts"></div>
-    
+    <div id="myPosts"></div> <!-- הפוסטים של המשתמש ייטענו לפה דרך JS -->
 
+    <!-- כפתור מעבר מצב כהה וכפתור יציאה -->
     <br><br>
-    <button id="themeToggle">Toggle Theme</button>
+    <button id="themeToggle">Toggle Theme</button> <!-- מעבר בין מצב רגיל/כהה -->
     <button id="signOutBtn" style="margin-top: 20px;">Sign Out</button>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
 
+    <!-- רווחים כדי לא לחסום את הניווט התחתון -->
+    <br><br><br><br><br>
 
-     <!-- Bottom Navigation -->
-  <div class="bottom-nav">
-    <button onclick="window.location.href='homepage.html'">Home</button>
-    <button onclick="window.location.href='profile.html'">My Profile</button>
-    <button id="createPostBtn" onclick="window.location.href='createPost.html'">Feed</button>
+    <!-- ניווט בין עמודים בתחתית הדף -->
+    <div class="bottom-nav">
+      <button onclick="window.location.href='homepage.html'">Home</button>
+      <button onclick="window.location.href='profile.html'">My Profile</button>
+      <button id="createPostBtn" onclick="window.location.href='createPost.html'">Feed</button>
+    </div>
   </div>
 
-    
-
-  </div>
-
+  <!-- קובץ שמנהל את הטעינה של פרטי המשתמש והפוסטים -->
   <script src="profile.js" type="module"></script>
-  <script src="toggleBtn.js" type="module"></script>
- 
-  
 
-  
+  <!-- קובץ שאחראי על מצב כהה/בהיר -->
+  <script src="toggleBtn.js" type="module"></script>
 </body>
 </html>

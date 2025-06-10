@@ -1,60 +1,61 @@
 import { setupThemeToggle } from "./toggleTheme"; // מייבא פונקציה שמטפלת בכפתור של מצב אור/כהה
-import { send } from "../utilities"; // מייבא פונקציה לשליחת בקשות לשרת
+import { send } from "../utilities"; // מייבא פונקציה כללית לשליחת בקשות לשרת
 
-// ממשק שמתאר מבנה של משתמש מהשרת
+// ממשק שמתאר את מבנה המשתמש שמתקבל מהשרת
 interface User {
   username: string;
   bio: string;
-  avatarUrl?: string;
-  theme?: string;
+  avatarUrl?: string; // שדה אופציונלי - ייתכן שאין תמונה
+  theme?: string; // שדה אופציונלי - ייתכן שאין ערכת נושא מוגדרת
 }
 
-// חילוץ מזהה המשתמש מה-URL או מהאחסון המקומי
+// חילוץ מזהה המשתמש מה-URL או מהאחסון המקומי (localStorage)
 const urlParams = new URLSearchParams(window.location.search);
-const userIdFromUrl = urlParams.get("userId");
-const loggedInUserId = localStorage.getItem("userId");
-const userId = userIdFromUrl || loggedInUserId;
+const userIdFromUrl = urlParams.get("userId"); // אם המשתמש נכנס דרך קישור עם מזהה
+const loggedInUserId = localStorage.getItem("userId"); // אם המשתמש התחבר במכשיר
+const userId = userIdFromUrl || loggedInUserId; // לוקחים את מה שקיים
 
-// אם אין משתמש מחובר, מעבירים לדף התחברות
+// אם אין בכלל מזהה - מעבירים לדף ההתחברות
 if (!userId) {
   window.location.href = "login.html";
 }
 
-// כשהדף נטען, מפעילים את כפתור הטוגל, טוענים פרופיל, מאזינים לכפתור התנתקות
+// כשהדף נטען – מבצעים מספר פעולות ראשוניות
 window.addEventListener("DOMContentLoaded", () => {
-  setupThemeToggle("themeToggle"); // מפעיל את כפתור מצב אור/כהה
-  loadProfile(); // טוען את פרטי המשתמש
+  setupThemeToggle("themeToggle"); // מפעיל את כפתור מצב האור/כהה
+  loadProfile(); // טוען את פרטי המשתמש מהשרת
 
   const toggleBtn = document.getElementById("themeToggle");
-  toggleBtn?.addEventListener("click", toggleTheme); // החלפת ערכת נושא בלחיצה
+  toggleBtn?.addEventListener("click", toggleTheme); // מקשיב ללחיצה להחלפת מצב תצוגה
 
   const signOutBtn = document.getElementById("signOutBtn");
   signOutBtn?.addEventListener("click", () => {
     if (confirm("Are you sure you want to sign out?")) {
-      localStorage.clear(); // מוחק את נתוני המשתמש מהדפדפן
-      window.location.href = "index.html";
+      localStorage.clear(); // מוחק את כל הנתונים המקומיים של המשתמש
+      window.location.href = "index.html"; // מחזיר לדף הראשי
     }
   });
 });
 
-// פונקציה שמביאה את פרטי המשתמש מהשרת ומציגה אותם בעמוד
+// פונקציה שמביאה את פרטי המשתמש מהשרת ומציגה אותם
 async function loadProfile() {
   const user = await send("profile", userId!) as User;
 
+  // מציגים שם משתמש וביוגרפיה
   document.getElementById("username")!.textContent = user.username;
   document.getElementById("bio")!.textContent = user.bio;
 
   const bioInput = document.getElementById("bioInput") as HTMLTextAreaElement;
   const saveBioBtn = document.getElementById("saveBioBtn") as HTMLButtonElement;
 
-  // אם המשתמש שצופה הוא הבעלים של הפרופיל – מאפשר עריכת ביוגרפיה
+  // אם המשתמש שצופה בפרופיל הוא הבעלים – מאפשרים עריכה
   if (userId === loggedInUserId && bioInput && saveBioBtn) {
     bioInput.value = user.bio;
 
     saveBioBtn.onclick = async () => {
       const newBio = bioInput.value.trim();
       if (newBio) {
-        await send("updatebio", [userId, newBio]);
+        await send("updatebio", [userId, newBio]); // שולח בקשה לעדכון הביוגרפיה
         document.getElementById("bio")!.textContent = newBio;
         alert("Bio updated!");
       } else {
@@ -62,32 +63,34 @@ async function loadProfile() {
       }
     };
   } else {
-    // אם זה פרופיל של מישהו אחר – מסתיר את אפשרות העריכה
+    // אם המשתמש צופה בפרופיל של מישהו אחר – מסתירים שדות עריכה
     bioInput.style.display = "none";
     saveBioBtn.style.display = "none";
   }
 
-  // תמונת פרופיל – אם אין, תופיע ברירת מחדל
+  // מציג תמונת פרופיל, ואם אין - תצוגת ברירת מחדל
   (document.getElementById("avatar") as HTMLImageElement).src =
     user.avatarUrl || "../../assets/imgs/default.jpg";
 
+  // טוען את ערכת הנושא מהזיכרון המקומי
   const savedTheme = localStorage.getItem("theme") || "light";
-  applyTheme(savedTheme); // מפעיל ערכת נושא בהתאם למה שנשמר
+  applyTheme(savedTheme); // מפעיל את הערכה (לבן או כהה)
 
-  loadUserPosts(); // טוען את הפוסטים של המשתמש
+  // מביא את הפוסטים של המשתמש
+  loadUserPosts();
 }
 
-// מביא מהשרת את כל הפוסטים של המשתמש ומציג אותם בעמוד
+// פונקציה שמביאה את כל הפוסטים של המשתמש הזה
 async function loadUserPosts() {
   const posts = await send("getuserposts", userId!);
   const container = document.getElementById("myPosts")!;
-  container.innerHTML = ""; // מנקה את התוכן לפני הצגה חדשה
+  container.innerHTML = ""; // מנקה את התוכן הקודם
 
   for (const post of posts) {
     const postDiv = document.createElement("div");
     postDiv.className = "post";
 
-    // עיצוב כללי לפוסט
+    // עיצוב בסיסי לפוסט
     postDiv.style.border = "1px solid #ddd";
     postDiv.style.borderRadius = "12px";
     postDiv.style.margin = "20px auto";
@@ -112,21 +115,21 @@ async function loadUserPosts() {
     content.style.fontSize = "1em";
     content.style.color = "#444";
 
-    // תצוגת מספר לייקים – נטען בנפרד
+    // שדה שמראה את מספר הלייקים
     const likeCount = document.createElement("p");
     likeCount.style.fontSize = "0.9em";
     likeCount.style.color = "#666";
     likeCount.style.marginTop = "10px";
     likeCount.textContent = "❤️ loading likes...";
 
-    // מבקש את מספר הלייקים מהשרת
+    // שולח בקשה לשרת לקבלת מספר הלייקים לפוסט
     send("getLikes", post.Id).then((count) => {
       likeCount.textContent = `❤️ ${count} Likes`;
     }).catch(() => {
       likeCount.textContent = "❤️ Likes not available";
     });
 
-    // מוסיף את כל האלמנטים לפוסט אחד
+    // מוסיף את החלקים לפוסט הסופי
     postDiv.appendChild(title);
     postDiv.appendChild(content);
     postDiv.appendChild(likeCount);
@@ -134,12 +137,12 @@ async function loadUserPosts() {
   }
 }
 
-// פונקציה שמחליפה בין אור לכהה (אם אין toggleTheme בקובץ אחר)
+// פונקציה שמחליפה בין מצב אור למצב כהה
 function toggleTheme() {
   document.body.classList.toggle("dark");
 }
 
-// פונקציה שמחילה ערכת נושא לפי מחרוזת שנשמרה
+// פונקציה שמחילה ערכת נושא לפי מה שנשמר בזיכרון
 function applyTheme(theme: string) {
   if (theme === "dark") {
     document.body.classList.add("dark");
