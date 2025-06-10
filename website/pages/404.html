@@ -20,31 +20,11 @@
       overflow: hidden; /* לא נותן לגלול */
     }
 
-    /* אפקט הריצוד (glitch) */
-    .glitch {
-      position: absolute;
-      width: 100%;
-      height: 100%;
-      background: repeating-linear-gradient(
-        0deg,
-        rgba(0, 255, 0, 0.1),
-        rgba(0, 255, 0, 0.1) 1px,
-        transparent 2px,
-        transparent 4px
-      );
-      backdrop-filter: blur(2px);
-      animation: flicker 0.6s steps(1) infinite;
-      z-index: 10;
-    }
+    
 
-    /* אנימציה של תזוזה וריצוד */
-    @keyframes flicker {
-      0% { transform: translateY(0); opacity: 1; }
-      50% { transform: translateY(2px); opacity: 0.8; }
-      100% { transform: translateY(-1px); opacity: 1; }
-    }
+   
 
-    /* קופסת הטרמינל שמופיעה אחרי אפקט הריצוד */
+    /* קופסת הטרמינל*/
     .terminal {
       background-color: #1a1a1a;
       padding: 30px;
@@ -53,16 +33,13 @@
       max-width: 800px;
       width: 90%;
       text-align: left;
-      opacity: 0; /* מוסתר בהתחלה */
+      opacity: 1; /* מופיעה ישר*/
       transform: scale(1.02); /* מוגדל מעט בהתחלה */
       transition: opacity 0.8s ease, transform 0.5s ease;
       z-index: 1;
     }
 
-    .terminal.visible {
-      opacity: 1; /* מופיע בהדרגה */
-      transform: scale(1); /* חזרה לגודל רגיל */
-    }
+ 
 
     /* עיצוב שורות */
     .line {
@@ -99,10 +76,8 @@
 
 <body>
 
-  <!-- שכבת הריצוד -->
-  <div class="glitch" id="glitchEffect"></div>
 
-  <!-- תיבת ההודעה שמופיעה אחרי האפקט -->
+  <!--תיבת ההודעה-->
   <div class="terminal" id="terminal">
     <div class="line comment">// 404 Error - Page Not Found</div>
     <div class="line">> Attempting to compile requested page...</div>
@@ -115,16 +90,6 @@
     <a href="/website/pages/homepage.html">Return to Homepage</a>
   </div>
 
-  <!-- סקריפט שמטפל בהסתרה של האפקט והצגת הטרמינל -->
-  <script>
-    const glitch = document.getElementById("glitchEffect");
-    const terminal = document.getElementById("terminal");
-
-    setTimeout(() => {
-      glitch.remove(); // מסיר את אפקט הריצוד
-      terminal.classList.add("visible"); // מציג את הטרמינל עם ההודעה
-    }, 2000); // אחרי 2 שניות
-  </script>
 
 </body>
 </html>

@@ -4,21 +4,6 @@ import { setupThemeToggle } from "./toggleTheme"; // מייבא את פונקצ�
 window.addEventListener("DOMContentLoaded", () => { // ברגע שהדף נטען
   setupThemeToggle("themeToggle"); // מפעיל את כפתור ההחלפה בין מצב כהה ובהיר
 
-  const tips = [ // רשימת טיפים למתכנתים
-    "Use meaningful variable names.",
-    "Break your code into functions.",
-    "Use version control like Git.",
-    "Debug with console.log or breakpoints.",
-    "Write comments for tricky logic.",
-    "Test your code with different inputs."
-  ];
-
-  const tipElement = document.getElementById("dailyTip"); // מחפש אלמנט להצגת טיפ יומי
-  if (tipElement) {
-    const tip = tips[Math.floor(Math.random() * tips.length)]; // בוחר טיפ אקראי מהמערך
-    tipElement.textContent = tip; // מציג את הטיפ בדף
-  }
-
   let submitButton = document.querySelector("#submitPost") as HTMLButtonElement; // לוקח את כפתור השליחה
   const userId: string | null = localStorage.getItem("userId"); // לוקח את מזהה המשתמש מה-localStorage
 

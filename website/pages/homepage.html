@@ -1,35 +1,34 @@
-<!DOCTYPE html> <!-- מציין שמדובר במסמך HTML5 -->
-<html lang="en"> <!-- השפה של הדף – אנגלית -->
+<!DOCTYPE html>
+<html lang="en">
 <head>
-  <meta charset="UTF-8"> <!-- קידוד תווים UTF-8 שתומך בעברית ואנגלית -->
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- מאפשר התאמה לטלפונים ניידים -->
-  <title>PostUp - Homepage</title> <!-- כותרת שמופיעה בלשונית הדפדפן -->
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PostUp - Homepage</title>
 
   <style>
-    /* משתנים גלובליים לצבעים (למצב רגיל) */
     :root {
-      --bg-color: #ffffff; /* רקע לבן */
-      --text-color: #000000; /* טקסט שחור */
-      --primary-color: #3B82F6; /* צבע ראשי (כחול) */
-      --button-bg: #8B5CF6; /* רקע לכפתור */
-      --button-hover-bg: #6D46C1; /* רקע כשעוברים עם העכבר על כפתור */
-      --card-bg: #ffffff; /* רקע כרטיס */
+      --bg-color: #ffffff;
+      --text-color: #000000;
+      --primary-color: #3B82F6;
+      --button-bg: #8B5CF6;
+      --button-hover-bg: #6D46C1;
+      --card-bg: #ffffff;
     }
 
     body {
-      background-color: var(--bg-color); /* צבע רקע של כל הדף */
-      color: var(--text-color); /* צבע טקסט כללי */
-      transition: background-color 0.3s ease, color 0.3s ease; /* אנימציה בשינוי צבעים */
-      font-family: 'Inter', sans-serif; /* גופן */
-      margin: 0; /* בלי שוליים */
-      padding: 0; /* בלי ריווחים */
-      box-sizing: border-box; /* מוודא שהרוחב כולל את הריווחים */
+      background-color: var(--bg-color);
+      color: var(--text-color);
+      transition: background-color 0.3s ease, color 0.3s ease;
+      font-family: 'Inter', sans-serif;
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
     }
 
     h1 {
-      margin-top: 50px; /* רווח מלמעלה */
-      font-size: 2.5em; /* גודל טקסט */
-      text-align: center; /* כותרת באמצע */
+      margin-top: 50px;
+      font-size: 2.5em;
+      text-align: center;
     }
 
     p {
@@ -38,12 +37,11 @@
     }
 
     .container {
-      max-width: 800px; /* רוחב מקסימלי */
-      margin: 20px auto; /* ריווח ואמצע */
+      max-width: 800px;
+      margin: 20px auto;
       padding: 20px;
     }
 
-    /* מצב כהה – עובר דרך כפתור מצב תצוגה */
     .dark {
       --bg-color: #1E1E1E;
       --text-color: #ffffff;
@@ -65,18 +63,18 @@
     }
 
     button:hover {
-      background-color: var(--button-hover-bg); /* כשעוברים עם העכבר על כפתור */
+      background-color: var(--button-hover-bg);
     }
 
     .bottom-nav {
       display: flex;
-      justify-content: space-around; /* מרווחים בין כפתורי ניווט */
+      justify-content: space-around;
       position: fixed;
       bottom: 0;
       width: 100%;
       background-color: var(--bg-color);
       padding: 10px 0;
-      box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1); /* צל למעלה */
+      box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1);
     }
 
     .bottom-nav button {
@@ -110,7 +108,6 @@
       margin-top: 0;
     }
 
-    /* עיצוב של תיבות קוד */
     .code-box {
       background-color: var(--card-bg);
       color: var(--text-color);
@@ -120,6 +117,8 @@
       white-space: pre-wrap;
       font-family: 'Fira Code', monospace;
       font-size: 0.95em;
+ 
+     
     }
 
     pre {
@@ -127,7 +126,6 @@
       overflow-x: auto;
     }
 
-    /* לוגו עגול עם גבול וצל */
     .logo-img {
       display: block;
       margin: 30px auto 0;
@@ -139,7 +137,6 @@
       box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     }
 
-    /* פריסת עמוד: צד שמאל תיבת הסברים, צד ימין תוכן */
     .layout-wrapper {
       display: flex;
       flex-direction: row;
@@ -176,7 +173,6 @@
       font-size: 0.95em;
     }
 
-    /* חיפוש משתמשים */
     .search-wrapper {
       position: relative;
       width: 220px;
@@ -230,53 +226,42 @@
     }
   </style>
 
-  <!-- ייבוא פונטים מגוגל -->
   <link href="https://fonts.googleapis.com/css2?family=Fira+Code&family=Inter&display=swap" rel="stylesheet">
 </head>
 
 <body>
   <div class="layout-wrapper">
-    <!-- תיבת הסבר בצד -->
     <aside class="instructions-box">
-      <h2>📘 איך להשתמש ב־PostUp</h2>
+      <h2>📘 How to Use PostUp</h2>
       <ul>
-        <li>📝 צרו פוסטים בלשונית <strong>Feed</strong></li>
-        <li>💬 הגיבו ועשו לייק לפוסטים</li>
-        <li>👤 ראו את הפרופיל שלכם בלשונית <strong>My Profile</strong></li>
-        <li>🌗 החליפו מצב אור/כהה</li>
-        <li>👥 חפשו משתמשים בקהילה שלנו</li>
+        <li>📝 Create posts in the <strong>Feed</strong> tab</li>
+        <li>💬 Comment and like posts</li>
+        <li>👤 View your profile in the <strong>My Profile</strong> tab</li>
+        <li>🌗 Switch between light/dark mode</li>
+        <li>👥 Search for users in our community</li>
       </ul>
     </aside>
 
-    <!-- שדה חיפוש -->
     <div class="search-wrapper">
       <input type="text" id="searchInput" placeholder="Search users...">
       <ul id="searchUl"></ul>
     </div>
 
-    <!-- אזור מרכזי: תוכן האתר -->
     <div class="container">
       <img src="logo-postup.png" alt="PostUp Logo" class="logo-img">
       <h1>Welcome to PostUp!</h1>
       <p>Every programmer's home.</p>
       <button id="themeToggle">Toggle Theme</button>
 
-      <!-- טיפ יומי -->
-      <div style="margin-top: 30px; text-align: center;">
-        <h2>💡 טיפ יומי</h2>
-        <p id="dailyTip" style="font-style: italic;"></p>
+      <div style="margin-top: 30px;">
+        <h2 style="text-align:center;">💡 Daily Tip</h2>
+        <p id="dailyTip" style="font-style: italic; text-align:center;"></p>
       </div>
 
-      <!-- פיד פוסטים (נטען דרך JS) -->
-      <div id="feed"></div>
-    </div>
-  </div>
+      <div style="margin-top: 10px;">
+        <h2 style="text-align:left;">🛠️ Programming Language Basics</h2>
+      </div>
 
-  <!-- קטעים של קוד בשפות תכנות -->
-  <div style="margin-top: 50px;">
-    <h2 style="text-align:center;">🛠️ יסודות בשפות תכנות</h2>
-
-    <div style="display: flex; flex-direction: column; gap: 20px;">
       <div class="code-box">
         <h3>🐍 Python</h3>
         <pre><code># Print text
@@ -327,14 +312,12 @@ string Greet(string name)
     </div>
   </div>
 
-  <!-- ניווט תחתון בין עמודים -->
   <div class="bottom-nav">
     <button onclick="window.location.href='homepage.html'">Home</button>
     <button onclick="window.location.href='profile.html'">My Profile</button>
     <button id="createPostBtn" onclick="window.location.href='createPost.html'">Feed</button>
   </div>
 
-  <!-- קובץ ג'אווהסקריפט שמנהל את הדף -->
   <script src="homepage.js" type="module"></script>
 </body>
 </html>
