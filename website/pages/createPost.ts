@@ -47,7 +47,8 @@ async function loadPosts(): Promise<void> {
     author.textContent = `Posted by: ${post.username}`; // שם המשתמש
 
     const timestamp = document.createElement("small"); // טקסט קטן לתאריך
-    timestamp.textContent = new Date(post.createdAt).toLocaleString(); // תאריך ושעה בפורמט קריא
+    timestamp.textContent = new Date(post.createdAt).toLocaleDateString();
+                                                                        // תאריך ושעה בפורמט קריא
 
     const likeBtn = document.createElement("button"); // כפתור לייק
     likeBtn.textContent = "Like ❤️"; // טקסט הכפתור

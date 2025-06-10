@@ -116,7 +116,7 @@ class Program
         var userId = request.GetBody<string>();
         var posts = database.Posts
           .Where(p => p.UserId == userId) // מסנן לפי מזהה המשתמש
-          .OrderByDescending(p => p.CreatedAt) // מהחדש לישן
+          .OrderByDescending(p => p.CreatedAt.Date) // מהחדש לישן
           .Select(p => new
           {
             p.Id,
