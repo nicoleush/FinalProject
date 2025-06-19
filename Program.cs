@@ -5,33 +5,34 @@ class Program
 {
   static void Main()
   {
-    int port = 5000;
-    var server = new Server(port); // יוצרים שרת שמאזין לפורט 5000
+    int port = int.Parse(Environment.GetEnvironmentVariable("PORT") ?? "10000");
+    var server = new Server(port);
 
     Console.WriteLine("The server is running");
     Console.WriteLine($"Main Page: http://localhost:{port}/website/pages/index.html");
 
-    var database = new Database(); // מחבר למסד הנתונים
-    database.Database.EnsureCreated(); // אם מסד הנתונים לא קיים - נוצר אותו
+    var database = new Database();
+    database.Database.EnsureCreated();
 
-    while (true) // לולאה שמאזינה לבקשות מהדפדפן
+    string root = Path.Combine(Directory.GetCurrentDirectory(), "website", "pages");
+
+    while (true)
     {
-      (var request, var response) = server.WaitForRequest(); // ממתין לבקשה מהלקוח
+      (var request, var response) = server.WaitForRequest();
       Console.WriteLine($"Received a request with the path: {request.Path}");
 
-      string path = request.Path.ToLower().TrimStart('/'); // מוריד '/' מההתחלה
+      string path = request.Path.ToLower().TrimStart('/');
+      string filePath = Path.Combine(root, path);
 
-      // אם הבקשה היא לקובץ סטטי (HTML, CSS, JS וכו') והוא באמת קיים
-      if (File.Exists(request.Path))
+      if (File.Exists(filePath))
       {
-        var file = new File(request.Path);
+        var file = new File(filePath);
         response.Send(file);
       }
-      // בקשה לפרופיל של משתמש מסוים
       else if (request.Path == "profile")
       {
-        var userId = request.GetBody<string>(); // מקבל את המזהה של המשתמש מהגוף של הבקשה
-        var user = database.Users.FirstOrDefault(u => u.Id == userId); // מחפש את המשתמש במסד
+        var userId = request.GetBody<string>();
+        var user = database.Users.FirstOrDefault(u => u.Id == userId);
 
         if (user != null)
         {
@@ -49,27 +50,24 @@ class Program
           response.Send("User not found");
         }
       }
-      // הרשמת משתמש חדש
       else if (path == "signup")
       {
-        // מקבל את כל הנתונים מהלקוח
         var (username, password, theme, bio, avatarUrl) = request.GetBody<(string, string, string, string, string)>();
-        var userExists = database.Users.Any(user => user.Username == username); // בדיקה אם השם תפוס
+        var userExists = database.Users.Any(user => user.Username == username);
 
         if (!userExists)
         {
-          var userId = Guid.NewGuid().ToString(); // יוצר מזהה ייחודי
+          var userId = Guid.NewGuid().ToString();
           database.Users.Add(new User(userId, username, password, "", bio, avatarUrl, theme));
-          database.SaveChanges(); // שומר את השינוי במסד
-          response.Send(userId); // מחזיר את המזהה ללקוח
+          database.SaveChanges();
+          response.Send(userId);
         }
         else
         {
-          response.SetStatusCode(409); // קוד 409 = קונפליקט (כמו משתמש קיים)
+          response.SetStatusCode(409);
           response.Send("Username already exists");
         }
       }
-      // עדכון הביוגרפיה של המשתמש
       else if (path == "updatebio")
       {
         var (userId, newBio) = request.GetBody<(string, string)>();
@@ -87,7 +85,6 @@ class Program
           response.Send("User not found");
         }
       }
-      // התחברות של משתמש קיים
       else if (path == "login")
       {
         var (username, password) = request.GetBody<(string, string)>();
@@ -106,45 +103,35 @@ class Program
         }
         else
         {
-          response.SetStatusCode(401); // 401 = לא מורשה
+          response.SetStatusCode(401);
           response.Send("Invalid credentials");
         }
       }
-      // בקשה להביא את כל הפוסטים של משתמש מסוים
       else if (path == "getuserposts")
       {
         var userId = request.GetBody<string>();
         var posts = database.Posts
-          .Where(p => p.UserId == userId) // מסנן לפי מזהה המשתמש
-          .OrderByDescending(p => p.CreatedAt.Date) // מהחדש לישן
+          .Where(p => p.UserId == userId)
+          .OrderByDescending(p => p.CreatedAt.Date)
           .Select(p => new
           {
             p.Id,
             Title = p.Title,
             Content = p.Content,
-            CreatedAt = p.CreatedAt.ToString("o") // פורמט זמן לפי ISO
+            CreatedAt = p.CreatedAt.ToString("o")
           })
           .ToList();
 
-        response.Send(posts); // שולח את רשימת הפוסטים
+        response.Send(posts);
       }
-      // יצירת פוסט חדש ע"י המשתמש
       else if (path == "createpost")
       {
-        var (userId, title, content) = request.GetBody<(string, string, string)>(); // קבלת נתוני הפוסט
-
-        var post = new Post
-        {
-          UserId = userId,
-          Title = title,
-          Content = content
-        };
-
-        database.Posts.Add(post); // מוסיפים למסד
-        database.SaveChanges(); // שומרים
+        var (userId, title, content) = request.GetBody<(string, string, string)>();
+        var post = new Post { UserId = userId, Title = title, Content = content };
+        database.Posts.Add(post);
+        database.SaveChanges();
         response.Send("Post created");
       }
-      // בקשה לכל הפוסטים בפלטפורמה
       else if (path == "getposts")
       {
         var posts = database.Posts
@@ -155,17 +142,16 @@ class Program
             title = p.Title,
             content = p.Content,
             createdAt = p.CreatedAt,
-            username = database.Users.FirstOrDefault(u => u.Id == p.UserId)!.Username // שם המשתמש שפרסם
+            username = database.Users.FirstOrDefault(u => u.Id == p.UserId)!.Username
           })
           .ToList();
 
         response.Send(posts);
       }
-      // לייק לפוסט
       else if (path == "likepost")
       {
         var (postId, userId) = request.GetBody<(int, string)>();
-        var alreadyLiked = database.Likes.Any(l => l.PostId == postId && l.UserId == userId); // בדיקה אם כבר עשה לייק
+        var alreadyLiked = database.Likes.Any(l => l.PostId == postId && l.UserId == userId);
 
         if (!alreadyLiked)
         {
@@ -178,76 +164,58 @@ class Program
           response.Send("Already liked");
         }
       }
-      // מספר הלייקים לפוסט
       else if (path == "getlikes")
       {
         var postId = request.GetBody<int>();
         var likeCount = database.Likes.Count(l => l.PostId == postId);
         response.Send(likeCount);
       }
-      // תגובה חדשה לפוסט
       else if (path == "addcomment")
       {
         var (postId, userId, content) = request.GetBody<(int, string, string)>();
-        var comment = new Comment
-        {
-          PostId = postId,
-          UserId = userId,
-          Content = content
-        };
+        var comment = new Comment { PostId = postId, UserId = userId, Content = content };
         database.Comments.Add(comment);
         database.SaveChanges();
         response.Send("Comment added");
       }
-      // קבלת כל התגובות של פוסט
       else if (path == "getcomments")
       {
         var postId = request.GetBody<int>();
         var comments = database.Comments
           .Where(c => c.PostId == postId)
           .OrderBy(c => c.CreatedAt)
-          .Select(c => new
-          {
-            c.UserId,
-            c.Content,
-            c.CreatedAt
-          })
+          .Select(c => new { c.UserId, c.Content, c.CreatedAt })
           .ToList();
 
         response.Send(comments);
       }
-      // חיפוש משתמשים לפי שם
       else if (path == "searchusers")
       {
         var searchTerm = request.GetBody<string>().ToLower();
         var users = database.Users
           .Where(u => u.Username.ToLower().Contains(searchTerm))
-          .Select(u => new {
-            u.Id,
-            u.Username,
-            u.AvatarUrl
-          }).ToList();
+          .Select(u => new { u.Id, u.Username, u.AvatarUrl })
+          .ToList();
 
         response.Send(users);
       }
-      // אם הבקשה היא לקובץ HTML שלא נמצא
       else if (request.ExpectsHtml())
       {
-        var file = new File("website/pages/404.html");
+        var file = new File(Path.Combine(root, "404.html"));
         response.SetStatusCode(404);
         response.Send(file);
       }
-      // כל מקרה אחר - בקשה לא חוקית
       else
       {
         response.SetStatusCode(400);
         response.Send($"Invalid request path: {request.Path}");
       }
 
-      response.Close(); // סוגרים את התשובה
+      response.Close();
     }
   }
 }
+
 // מחלקה שמייצגת את מסד הנתונים
 public class Database : DbContext
 {
