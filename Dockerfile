@@ -10,4 +10,4 @@ RUN dotnet publish WebTemplate.csproj -c Release -o out
 
 WORKDIR /app/out
 EXPOSE 10000
-ENTRYPOINT ["dotnet", "FinalProject.dll"]
+ENTRYPOINT ["dotnet", "WebTemplate.dll"]
