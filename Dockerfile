@@ -2,11 +2,11 @@ FROM mcr.microsoft.com/dotnet/sdk:8.0
 
 WORKDIR /app
 
-COPY *.csproj ./
-RUN dotnet restore
+COPY WebTemplate.csproj ./
+RUN dotnet restore WebTemplate.csproj
 
 COPY . ./
-RUN dotnet publish -c Release -o out
+RUN dotnet publish WebTemplate.csproj -c Release -o out
 
 WORKDIR /app/out
 EXPOSE 10000
