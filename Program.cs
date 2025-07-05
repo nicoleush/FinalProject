@@ -216,7 +216,7 @@ class Program
   }
 }
 
-// מחלקה שמייצגת את מסד הנתונים
+
 public class Database : DbContext
 {
   public DbSet<User> Users { get; set; } = default!;
@@ -226,15 +226,15 @@ public class Database : DbContext
 
   protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
   {
-    // מגדיר שימוש במסד נתונים מסוג SQLite ששמור בקובץ database.db
+    
     optionsBuilder.UseSqlite("Data Source=database.db");
   }
 }
 
-// ייצוג של טבלת משתמשים במסד
+
 public class User
 {
-  [Key] // מפתח ראשי
+  [Key] 
   public string Id { get; set; }
   public string Username { get; set; }
   public string Password { get; set; }
@@ -243,7 +243,7 @@ public class User
   public string AvatarUrl { get; set; }
   public string Theme { get; set; }
 
-  // בנאי - משמש ליצירת משתמש חדש
+ 
   public User(string id, string username, string password, string email = "", string bio = "", string avatarUrl = "", string theme = "light")
   {
     Id = id;
@@ -256,16 +256,16 @@ public class User
   }
 }
 
-// ייצוג של טבלת פוסטים
+
 public class Post
 {
-  [Key] public int Id { get; set; } // מזהה ייחודי
-  public string UserId { get; set; } // של מי הפוסט
-  public string Title { get; set; } // כותרת
-  public string Content { get; set; } // תוכן
-  public DateTime CreatedAt { get; set; } = DateTime.UtcNow; // זמן יצירה ברירת מחדל
+  [Key] public int Id { get; set; } 
+  public string UserId { get; set; } 
+  public string Title { get; set; } 
+  public string Content { get; set; } 
+  public DateTime CreatedAt { get; set; } = DateTime.UtcNow; 
 
-  public Post() { } // בנאי ריק נחוץ למסד
+  public Post() { } 
   public Post(string userId, string title, string content)
   {
     UserId = userId;
@@ -274,7 +274,7 @@ public class Post
   }
 }
 
-// ייצוג של טבלת תגובות
+
 public class Comment
 {
   [Key] public int Id { get; set; }
@@ -293,7 +293,7 @@ public class Comment
   }
 }
 
-// ייצוג של טבלת לייקים
+
 public class Like
 {
   [Key] public int Id { get; set; }

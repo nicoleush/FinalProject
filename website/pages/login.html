@@ -1,74 +1,74 @@
-<!DOCTYPE html> <!-- מציין שהמסמך הוא HTML5 -->
-<html lang="en"> <!-- השפה של התוכן בדף היא אנגלית -->
+<!DOCTYPE html> 
+<html lang="en"> 
 <head>
-  <meta charset="UTF-8"> <!-- קידוד תווים בינלאומי -->
-  <title>PostUp - Login</title> <!-- שם הדף שמופיע בלשונית -->
+  <meta charset="UTF-8"> 
+  <title>PostUp - Login</title> 
 
   <style>
-    /* עיצוב כללי לגוף הדף */
+ 
     body {
-      background-color: rgb(230, 217, 201); /* צבע רקע קרמי */
-      display: flex; /* מסדר את התוכן בעזרת Flexbox */
-      flex-direction: column; /* טור אנכי */
-      align-items: center; /* ממרכז את התוכן לרוחב */
-      font-family: Arial, sans-serif; /* גופן בסיסי */
+      background-color: rgb(230, 217, 201); 
+      display: flex; 
+      flex-direction: column; 
+      align-items: center; 
+      font-family: Arial, sans-serif; 
     }
 
     h1 {
-      margin-top: 60px; /* רווח מהחלק העליון של הדף */
+      margin-top: 60px; 
     }
 
-    /* עיצוב שדות קלט */
+    
     input {
-      padding: 10px; /* ריווח פנימי */
-      width: 200px; /* רוחב אחיד */
-      margin: 8px 0; /* רווחים מעל ומתחת */
-      border: 1px solid #ccc; /* גבול אפור */
-      border-radius: 6px; /* פינות מעוגלות */
+      padding: 10px; 
+      width: 200px;
+      margin: 8px 0; 
+      border: 1px solid #ccc; 
+      border-radius: 6px; 
     }
 
-    /* עיצוב כפתור */
+  
     button {
       padding: 10px 20px;
-      background-color: black; /* צבע רקע */
-      color: white; /* צבע טקסט */
-      border: none; /* בלי גבול */
-      cursor: pointer; /* סמן עכבר משתנה */
-      border-radius: 6px; /* פינות מעוגלות */
+      background-color: black; 
+      color: white; 
+      border: none; 
+      cursor: pointer; 
+      border-radius: 6px; 
     }
 
     button:hover {
-      background-color: #333; /* שינוי צבע כשעוברים עם העכבר */
+      background-color: #333; 
     }
 
-    /* הודעת שגיאה או מצב */
+   
     #message {
-      color: red; /* טקסט אדום */
+      color: red; 
       margin-top: 10px;
     }
   </style>
 </head>
 
 <body>
-  <!-- כותרת הדף -->
+
   <h1>Login to PostUp</h1>
 
-  <!-- טופס התחברות -->
+
   <div style="margin-top: 30px; display: flex; flex-direction: column; align-items: center;">
-    <!-- שדה שם משתמש -->
+    
     <input type="text" placeholder="Username" id="username" required />
 
-    <!-- שדה סיסמה -->
+ 
     <input type="password" placeholder="Password" id="password" required />
 
-    <!-- כפתור התחברות -->
+
     <button id="loginBtn">Login</button>
 
-    <!-- תיבת הודעה לשגיאה או הצלחה -->
+    
     <div id="message"></div>
   </div>
 
-  <!-- קובץ JavaScript עם הלוגיקה של ההתחברות -->
+
   <script src="login.js" type="module"></script>
 </body>
 </html>

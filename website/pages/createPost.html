@@ -8,7 +8,7 @@
   <link rel="icon" href="favicon.png">
 
   <style>
-    /* משתנים גלובליים לצבעים */
+ 
     :root {
       --bg-color: #f9f9f9;
       --text-color: #333333;
@@ -18,7 +18,7 @@
       --card-bg: #ffffff;
     }
 
-    /* עיצוב בסיסי של הדף */
+  
     body {
       background-color: var(--bg-color);
       color: var(--text-color);
@@ -27,7 +27,7 @@
       padding: 0;
     }
 
-    /* קופסת התוכן הראשית */
+ 
     .container {
       max-width: 800px;
       margin: 40px auto;
@@ -41,7 +41,6 @@
       text-align: center;
     }
 
-    /* עיצוב שדות קלט וטקסט */
     input[type="text"],
     textarea {
       width: 100%;
@@ -53,7 +52,7 @@
       box-sizing: border-box;
     }
 
-    /* כפתורים */
+
     button {
       background-color: var(--primary-color);
       color: #fff;
@@ -71,7 +70,7 @@
       background-color: var(--button-hover-bg);
     }
 
-    /* עיצוב אזור הפוסטים */
+ 
     .posts-section {
       margin-top: 50px;
     }
@@ -109,7 +108,7 @@
       margin: 40px 0;
     }
 
-    /* ניווט תחתון קבוע */
+
     .bottom-nav {
       display: flex;
       justify-content: space-around;
@@ -131,7 +130,6 @@
       cursor: pointer;
     }
 
-    /* מצב כהה */
     .dark .bottom-nav button {
       background-color: var(--button-bg);
     }
@@ -152,14 +150,14 @@
 </head>
 
 <body>
-  <!-- כפתור שמחליף בין מצב לילה/יום -->
+
   <button id="themeToggle">Toggle Theme</button>
 
-  <!-- קופסת התוכן -->
+
   <div class="container">
     <h1>Create Your Post</h1>
 
-    <!-- טופס יצירת פוסט -->
+
     <div id="postForm">
       <input type="text" id="postTitle" placeholder="Post Title" required>
       <textarea id="postContent" placeholder="Write your post..." rows="5" required></textarea>
@@ -168,24 +166,24 @@
 
     <div class="divider"></div>
 
-    <!-- אזור הצגת הפוסטים -->
+
     <div class="posts-section">
       <h2>Recent Posts</h2>
-      <div id="feed"></div> <!-- הפוסטים ייכנסו לכאן בג'אווהסקריפט -->
+      <div id="feed"></div> 
     </div>
   </div>
 
-  <!-- רווח כדי שהניווט התחתון לא יכסה את התוכן -->
+
   <br><br><br><br><br>
 
-  <!-- סרגל תחתון עם כפתורי ניווט -->
+
   <div class="bottom-nav">
     <button onclick="window.location.href='homepage.html'">Home</button>
     <button onclick="window.location.href='profile.html'">My Profile</button>
     <button id="createPostBtn" onclick="window.location.href='createPost.html'">Feed</button>
   </div>
 
-  <!-- קישורים לקבצי סקריפט -->
+
   <script src="createPost.js" type="module"></script>
   <script src="toggleTheme.js" type="module"></script>
 
