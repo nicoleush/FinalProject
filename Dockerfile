@@ -9,7 +9,8 @@ RUN dotnet restore
 
 # מוסיף את שאר הקבצים ובונה את הפרויקט
 COPY . .
-RUN dotnet publish -c Release -o out
+RUN dotnet publish WebTemplate.csproj -c Release -o out
+
 
 # שלב הריצה
 FROM mcr.microsoft.com/dotnet/runtime:8.0
